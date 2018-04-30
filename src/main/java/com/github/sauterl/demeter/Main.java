@@ -22,6 +22,6 @@ public class Main {
   
   public static void main(String[] args) throws ParserConfigurationException, SAXException, FlickrException, IOException {
     LOGGER.info("Starting demeter");
-    new SimpleFlickrCrawler().test();
+    new SimpleFlickrCrawler().labour();
   }
 }
