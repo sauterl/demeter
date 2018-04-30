@@ -1,5 +1,11 @@
 # .gitignore
 # ===========
+# Custom Ignorings
+
+api-auth.properties
+**ApiKey.java
+
+# ----------
 # Gradle
 
 .gradle

@@ -1,7 +1,15 @@
+plugins{
+    // https://github.com/mfuerstenau/gradle-buildconfig-plugin
+    id 'de.fuerstenau.buildconfig' version '1.1.8'
+}
+
 group 'com.github.sauterl'
 version 'DEV-1'
 
+
+
 apply plugin: 'java'
+apply plugin: 'idea'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -27,7 +35,9 @@ dependencies {
 
     compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
 
+    compile group: 'org.mapdb', name: 'mapdb', version:'3.0.5'
 
+    compile 'com.aetrion.flickr:flickrapi:1.1'
 }
 
 sourceSets {
@@ -58,6 +68,13 @@ jar {
     }
 }
 
+buildConfig{
+    clsName='ApiKeyStore'
+    packageName='com.github.sauterl.demeter'
+    buildConfigField 'String', 'FLICKR_PUBLIC', getApiKeyPublic('flickr')
+    buildConfigField 'String', 'FLICKR_PRIVATE', getApiKeyPrivate('flickr')
+}
+
 /**
  * From:
  * https://github.com/nostra13/Android-Universal-Image-Loader/issues/1086
@@ -67,3 +84,45 @@ tasks.withType(Javadoc) {
     options.addStringOption('charSet', 'UTF-8')
     options.addStringOption('Xdoclint:none', '-quiet')
 }
+
+
+
+def getApiKeyPublic(String api){
+    Properties props = new Properties()
+    props.load(new FileInputStream("api-auth.properties"))
+    return props.getProperty('api.$api.key.public')
+}
+
+def getApiKeyPrivate(String api){
+    Properties props = new Properties()
+    props.load(new FileInputStream("api-auth.properties"))
+    return props.getProperty('api.$api.key.private')
+}
+
+//https://stackoverflow.com/questions/20104323/generate-a-java-class-using-gradle-for-java-plugin
+task generateSources {
+    /*
+    outputDir = file("$buildDir/../src/main/java/com/github/sauterl/demeter")
+    outputs.dir outputDir
+    doFirst {
+        outputDir.exists() || outputDir.mkdirs()
+
+        String privateKey = getApiKeyPrivate("flickr")
+        String publicKey = getApiKeyPublic("flickr")
+
+        String API_PRIVATE = "public static final String FLICKR_PRIVATE = \"$privateKey\";\n"
+        String API_PUBLIC = "public static final String FLICKR_PUBLIC = \"$publicKey\";\n"
+
+        /*
+        try {
+            API_CLIENT_ID = "public static final String API_CLIENT_ID = \"" + apiClientId + "\";\n"
+            API_CLIENT_SECRET = "public static final String API_CLIENT_SECRET = \"" + apiClientSecret + "\";\n"
+        } catch (Exception e) {
+            println "gradle.properties not set with apiClientId and/or apiClientSecret. API calls will not work.";
+        }*/
+
+     /*   new File(outputDir, "ApiKeyStore.java").write("package com.github.sauterl.demeter;\n\npublic class ApiKeyStore {\n" + "    " + API_CLIENT_ID + "    " + API_CLIENT_SECRET + "}")*/
+    //}
+}
+
+compileJava.source generateSources.outputs.files, sourceSets.main.java
