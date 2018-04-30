@@ -4,6 +4,7 @@ version 'DEV-1'
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -11,4 +12,58 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.3'
+
+
+    compile group: 'com.j2html', name: 'j2html', version: '0.88'
+    // https://mvnrepository.com/artifact/commons-lang/commons-lang
+    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+
+    compile 'com.intellij:annotations:12.0'
+
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.10.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.10.0'
+
+    compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
+
+
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+        resources {
+            srcDir 'src/test/resources'
+        }
+    }
+}
+
+jar {
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest{
+        attributes 'Main-Class': 'SOMECLASS'
+    }
+}
+
+/**
+ * From:
+ * https://github.com/nostra13/Android-Universal-Image-Loader/issues/1086
+ */
+tasks.withType(Javadoc) {
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
