@@ -30,6 +30,8 @@ class SimpleFlickrCrawler {
         val photos = deserializePhotosResult(extractJson(result))
 
         println("Number of photos: ${photos.photo.size}")
+
+        photos.photo.forEach { println(it.getUrl()) }
     }
 
     fun extractJson(result: Result<String, FuelError>): String {

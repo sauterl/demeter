@@ -1,5 +1,7 @@
 package com.github.sauterl.demeter.flickr
 
+import java.net.URL
+
 /**
  * POJO for a <i>photo</i> in flickr-speech
  *
@@ -14,4 +16,9 @@ data class FlickrPhoto(
         val title: String,
         val ispublic: Number,
         val isfriend: Number,
-        val isfamily: Number)
+        val isfamily: Number){
+
+    fun getUrl(): URL {
+       return URL("https://farm$farm.staticflickr.com/$server/${id}_$secret.jpg")
+    }
+}
