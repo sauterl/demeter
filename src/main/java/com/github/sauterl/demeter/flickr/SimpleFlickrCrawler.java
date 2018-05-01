@@ -13,6 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -26,25 +28,114 @@ public class SimpleFlickrCrawler {
   public void labour() throws IOException {
     //https://stackoverflow.com/a/1359700
     final String baseURL = "https://api.flickr.com/services/rest/";
-    final String generalParams = "?api_key=@key@&format=json";
-    final String params = "&method=flickr.test.echo&name=value";
-    final String query = baseURL+generalParams.replace("@key@",FlickrApiKey.PUBLIC_KEY)+params; // should work (browser and insomnia)
+    final String generalParams = "api_key=@key@&format=json";
+    final String testParams = "&method=flickr.test.echo&name=value";
+    final String tagParams = "method=flickr.photos.search&tags=fantasybasel";
+    final String query = baseURL+"?"+tagParams+"&"+generalParams.replace("@key@",FlickrApiKey.PUBLIC_KEY); // should work (browser and insomnia)
   
     System.out.println("Query: "+query);
     
     URL url = new URL(baseURL);
     HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-    //conn.setDoOutput(true);
-    //conn.setRequestProperty("Content-Length",Integer.toString(query.getBytes().length));
-    //DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-    //dos.writeBytes(query);
-    //dos.close();
+    conn.setRequestMethod("GET");
+    conn.connect();
   
     InputStream is = conn.getInputStream();
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
     
     br.lines().forEach(System.out::println);
     br.close();
+    is.close();
+  }
+  
+  public void soapRequestTag() throws IOException {
+    final String baseURL = "https://api.flickr.com/services/soap/";
+  
+    String postData = "<s:Envelope\n" +
+        "\txmlns:s=\"http://www.w3.org/2003/05/soap-envelope\"\n" +
+        "\txmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\"\n" +
+        "\txmlns:xsd=\"http://www.w3.org/1999/XMLSchema\"\n" +
+        ">\n" +
+        "\t<s:Body>\n" +
+        "\t\t<x:FlickrRequest xmlns:x=\"urn:flickr\">\n" +
+        "\t\t\t<method>flickr.photos.search</method>\n" +
+        "\t\t\t<api_key>@key@</api_key>\n" +
+        "\t\t\t<tags>fantasybasel</tags>\n" +
+        "\t\t\t<format>json</format>\n" +
+        "\t\t</x:FlickrRequest>\n" +
+        "\t</s:Body>\n" +
+        "</s:Envelope>";
+    postData = postData.replace("@key@", FlickrApiKey.PUBLIC_KEY);
+    System.out.println("Posting: "+postData);
+  
+    URL url = new URL(baseURL);
+    URLConnection con = url.openConnection();
+    HttpURLConnection http = (HttpURLConnection)con;
+  
+    http.setRequestMethod("POST");
+    http.setDoOutput(true);
+  
+    byte[] data = postData.getBytes(StandardCharsets.UTF_8);
+  
+    http.setFixedLengthStreamingMode(data.length);
+    //http.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
+    http.connect();
+    try(OutputStream os = http.getOutputStream()){
+      os.write(data);
+    }
+  
+    System.out.println("Sent request");
+  
+    BufferedReader br = new BufferedReader(new InputStreamReader(http.getInputStream()));
+  
+    System.out.println("Response: "+http.getResponseMessage());
+  
+    br.lines().forEach(System.out::println);
+  }
+  
+  public void soapRequest() throws IOException {
+    final String baseURL = "https://api.flickr.com/services/soap/";
+    
+    String postData = "<s:Envelope\n" +
+        "\txmlns:s=\"http://www.w3.org/2003/05/soap-envelope\"\n" +
+        "\txmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\"\n" +
+        "\txmlns:xsd=\"http://www.w3.org/1999/XMLSchema\"\n" +
+        ">\n" +
+        "\t<s:Body>\n" +
+        "\t\t<x:FlickrRequest xmlns:x=\"urn:flickr\">\n" +
+        "\t\t\t<method>flickr.test.echo</method>\n" +
+        "\t\t\t<api_key>@key@</api_key>\n" +
+        "\t\t\t<name>value</name>\n" +
+        "\t\t\t<format>json</format>\n" +
+        "\t\t</x:FlickrRequest>\n" +
+        "\t</s:Body>\n" +
+        "</s:Envelope>";
+    postData = postData.replace("@key@", FlickrApiKey.PUBLIC_KEY);
+    System.out.println("Posting: "+postData);
+    
+    URL url = new URL(baseURL);
+    URLConnection con = url.openConnection();
+    HttpURLConnection http = (HttpURLConnection)con;
+    
+    http.setRequestMethod("POST");
+    http.setDoOutput(true);
+    
+    byte[] data = postData.getBytes(StandardCharsets.UTF_8);
+    
+    http.setFixedLengthStreamingMode(data.length);
+    //http.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
+    http.connect();
+    try(OutputStream os = http.getOutputStream()){
+      os.write(data);
+    }
+  
+    System.out.println("Sent request");
+    
+    BufferedReader br = new BufferedReader(new InputStreamReader(http.getInputStream()));
+  
+    System.out.println("Response: "+http.getResponseMessage());
+    
+    br.lines().forEach(System.out::println);
   }
   
 
