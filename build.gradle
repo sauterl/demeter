@@ -1,0 +1,51 @@
+buildscript {
+    ext.kotlin_version = '1.2.30'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+group 'com.github.sauterl'
+version 'DEV-1'
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {url 'https://jitpack.io'}
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
+
+    compile 'com.github.kittinunf.fuel:fuel:1.13.0' //for JVM
+    compile 'com.github.kittinunf.fuel:fuel-coroutines:1.13.0' //for Kotlin Coroutines support
+    compile 'com.github.kittinunf.fuel:fuel-jackson:1.13.0' //for Jackson support
+
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+jar {
+    manifest{
+        attributes 'Main-Class': 'com.github.sauterl.demeter.MainKt'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
