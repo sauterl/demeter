@@ -1,5 +1,9 @@
 package com.github.sauterl.demeter.twitter
 
+import twitter4j.Query
+import twitter4j.TwitterFactory
+import twitter4j.conf.ConfigurationBuilder
+
 /**
  * TODO: Write JavaDoc
  * @author loris.sauter
@@ -7,18 +11,33 @@ package com.github.sauterl.demeter.twitter
 class SimpleTwitterCrawler {
 
     fun test(){
+        // Thanks @lucaro for the example.
 
+        val cb = ConfigurationBuilder()
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(TWITTER_PUBLIC)
+                .setOAuthConsumerSecret(TWITTER_PRIVATE)
+                .setOAuthAccessToken(TWITTER_TOKEN)
+                .setOAuthAccessTokenSecret(TWITTER_TOKEN_SECRET)
+                .setIncludeEntitiesEnabled(true)
+        val tf = TwitterFactory(cb.build())
+        val twitter = tf.instance
+
+        val query = Query("#fantasybasel")
+        query.resultType = Query.ResultType.recent
+
+        val result = twitter.search(query)
+
+        result.tweets.forEach {
+            println(it.user.screenName)
+            println(it.text)
+            it.urlEntities.forEach {
+                println(it.expandedURL)
+            }
+        }
     }
 
-    fun createAuth(){
-        val oauthPairs: MutableList<Pair<String,String>> = mutableListOf()
 
-        oauthPairs.add(Pair("oauth_consumer_key", TWITTER_PUBLIC))
-        oauthPairs.add(Pair("oauth_nonce", "kYjz1238Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg")) // TODO howto generate nonce
-        oauthPairs.add(Pair("oauth_signature", "<signature>"))
-        oauthPairs.add(Pair("oauth_signature_method", "HMAC-SHA1"))
-
-    }
 
 
 }

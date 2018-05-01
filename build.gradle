@@ -28,6 +28,10 @@ dependencies {
 
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
 
+    // https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
+    compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.6'
+
+
     compile 'com.github.kittinunf.fuel:fuel:1.13.0' //for JVM
     compile 'com.github.kittinunf.fuel:fuel-coroutines:1.13.0' //for Kotlin Coroutines support
     compile 'com.github.kittinunf.fuel:fuel-jackson:1.13.0' //for Jackson support
