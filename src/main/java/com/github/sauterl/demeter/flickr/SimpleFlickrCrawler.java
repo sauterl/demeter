@@ -28,17 +28,17 @@ public class SimpleFlickrCrawler {
     final String baseURL = "https://api.flickr.com/services/rest/";
     final String generalParams = "?api_key=@key@&format=json";
     final String params = "&method=flickr.test.echo&name=value";
-    final String query = generalParams.replace("@key@",FlickrApiKey.PUBLIC_KEY)+params;
+    final String query = baseURL+generalParams.replace("@key@",FlickrApiKey.PUBLIC_KEY)+params; // should work (browser and insomnia)
   
     System.out.println("Query: "+query);
     
     URL url = new URL(baseURL);
     HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-    conn.setDoOutput(true);
-    conn.setRequestProperty("Content-Length",Integer.toString(query.getBytes().length));
-    DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-    dos.writeBytes(query);
-    dos.close();
+    //conn.setDoOutput(true);
+    //conn.setRequestProperty("Content-Length",Integer.toString(query.getBytes().length));
+    //DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+    //dos.writeBytes(query);
+    //dos.close();
   
     InputStream is = conn.getInputStream();
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
