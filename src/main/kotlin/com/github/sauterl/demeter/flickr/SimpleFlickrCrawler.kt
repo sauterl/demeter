@@ -5,6 +5,8 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.result.Result
+import com.github.sauterl.demeter.cineast.CineastInterface
+import com.github.sauterl.demeter.cineast.ExtractionContainer
 
 
 /**
@@ -15,10 +17,21 @@ class SimpleFlickrCrawler {
 
     private val flickrSoapUrl = "https://api.flickr.com/services/soap/"
 
-    fun testMore(){
+    fun testMore() {
         val flickr = FlickrInterface()
-        val photos = flickr.searchPhotos("fantasybasel")
+        val photos = flickr.searchPhotos("fantasybasel", 20)
+        photos.photo.forEach {
+            println(ImageDownloader.downloadImage(it).path)
+        }
+    }
 
+    fun testMorer() {
+        val flickr = FlickrInterface()
+        val photos = flickr.searchPhotos("fantasybasel", 20)
+        val container = RequestBuilder().createRequest(photos.photo)
+        val cineast = CineastInterface("http://localhost:4567").apply { startSession() }
+        // remove duplicates
+        cineast.extractNew(mapper.writeValueAsString(container))
     }
 
     fun test() {
@@ -58,7 +71,7 @@ class SimpleFlickrCrawler {
                 "\t\t\t<api_key>$FLICKR_PUBLIC</api_key>\n" +
                 "\t\t\t<tags>$tag</tags>\n" +
                 "\t\t\t<format>json</format>\n" +
-                "\t\t\t<per_page>500</per_page>"+
+                "\t\t\t<per_page>500</per_page>" +
                 "\t\t</x:FlickrRequest>\n" +
                 "\t</s:Body>\n" +
                 "</s:Envelope>"
@@ -66,7 +79,7 @@ class SimpleFlickrCrawler {
 
     private val mapper = jacksonObjectMapper()
 
-    fun deserializePhotosResult(json:String): FlickrPhotosResult {
+    fun deserializePhotosResult(json: String): FlickrPhotosResult {
         return mapper.readValue<FlickrPhotosResultContainer>(json).photos
     }
 }

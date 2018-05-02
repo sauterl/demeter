@@ -11,7 +11,7 @@ fun main(args: Array<String>){
     println("Started")
     if(args.size >= 1){
         when(args[0].toLowerCase()){
-            "flickr" -> SimpleFlickrCrawler().test()
+            "flickr" -> SimpleFlickrCrawler().testMorer()
             "twitter" -> SimpleTwitterCrawler().test()
             else->{
                 println("No mode specified. Known modes: 'flickr', 'twitter'")

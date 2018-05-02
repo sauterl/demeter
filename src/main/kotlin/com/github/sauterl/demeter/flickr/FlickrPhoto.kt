@@ -22,15 +22,15 @@ data class FlickrPhoto(
         val ispublic: Number,
         val isfriend: Number,
         val isfamily: Number,
-        val description: FlickrDescription,
+        val description: FlickrDescription?,
         /**
          * In unix timestamp
          */
-        val dateupload: String,
+        val dateupload: String?,
         /**
          * In MySQL date format
          */
-        val datetaken: String,
+        val datetaken: String?,
         /**
          * ee https://www.flickr.com/services/api/misc.dates.html
          * 0	Y-m-d H:i:s
@@ -38,11 +38,11 @@ data class FlickrPhoto(
          * 6	Y
          * 8	Circa..
          */
-        val datetakengranularity: String,
-        val ownername: String,
-        val tags: String,
-        val latitude: Number,
-        val longitude: Number
+        val datetakengranularity: String?,
+        val ownername: String?,
+        val tags: String?,
+        val latitude: Number?,
+        val longitude: Number?
         ) {
 
     data class FlickrDescription(
@@ -54,6 +54,6 @@ data class FlickrPhoto(
     }
 
     fun getTagList(): List<String> {
-        return tags.split(" ")
+        return tags?.split(" ") ?: emptyList()
     }
 }

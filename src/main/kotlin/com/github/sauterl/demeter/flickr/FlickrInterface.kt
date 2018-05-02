@@ -14,14 +14,16 @@ class FlickrInterface {
 
     val flickrSoapUrl = "https://api.flickr.com/services/soap/"
 
-    fun searchPhotos(tag: String): FlickrPhotosResult {
+    fun searchPhotos(tag: String, amount:Int=500): FlickrPhotosResult {
         val req = envelopeOpen +
                 bodyOpen +
                 requestOpen +
                 createMethod("flickr.photos.search") +
+                formatJson +
+                apiKey+
                 createParam("tags", tag) +
-                createParam("per_page", "500") +
-                createParam("extras","description," +
+                createParam("per_page", "$amount") +
+                /*createParam("extras","description," +
                         "license," +
                         "date_upload," +
                         "date_taken," +
@@ -30,7 +32,7 @@ class FlickrInterface {
                         "geo,tags," +
                         "machine_tags," +
                         "url_o," +
-                        "url_m")+
+                        "url_m")+*/
                 requestClose +
                 bodyClose +
                 envelopeClose
@@ -41,6 +43,14 @@ class FlickrInterface {
         println("Request: $request\n---\nResponse: $response\n---\nResult: $result")
 
         println("Stripped: " + extractJson(result))
+
+        /*
+        Howto
+        createParam("bla"){
+            createParam("bla"){
+                "blub"
+            }
+        }*/
 
         return deserializePhotosResult(extractJson(result))
     }
@@ -54,7 +64,7 @@ class FlickrInterface {
     private fun extractJson(result: Result<String, FuelError>): String {
         val start = result.get().indexOf('(')
         val end = result.get().lastIndexOf(')')
-        return result.get().substring((start + 1)..end)
+        return result.get().substring((start + 1)..(end-1))
     }
 
     private val formatJson = "<format>json</format>"
@@ -78,6 +88,8 @@ class FlickrInterface {
     private fun createMethod(method: String): String {
         return "<method>$method</method>"
     }
+
+    /*fun createParam(name: String, value: () -> String): String = "<$name>$value</$name>"*/
 
 
 }

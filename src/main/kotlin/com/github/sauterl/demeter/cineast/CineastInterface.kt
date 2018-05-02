@@ -15,8 +15,8 @@ class CineastInterface(val url:String){
         const val SESSION = "session/"
         const val START = "start"
         const val END = "end"
-        const val EXTRACT_NEW = "extract/new"
-        const val EXTRACT_END = "extract/end"
+        const val EXTRACT_NEW = SESSION+"extract/new"
+        const val EXTRACT_END = SESSION+"extract/end"
         const val USER_NAME = "user"
         const val USER_PW = "user"
     }
@@ -34,8 +34,8 @@ class CineastInterface(val url:String){
 
     private val mapper = jacksonObjectMapper()
 
-    fun startSession(user:String){
-        val (request, response, result) = Fuel.post(getTheUrl()+ API_ACCESS+ SESSION+START).body(user).responseString()
+    fun startSession(){
+        val (request, response, result) = Fuel.post(getTheUrl()+  SESSION+START).body(mapper.writeValueAsString(CredentialsContainer())).responseString()
         session = mapper.readValue<Session>(result.get() )
 
     }
@@ -46,7 +46,11 @@ class CineastInterface(val url:String){
     }
 
     fun extractNew(content:String){
-        val (request, response, result) = Fuel.post(getTheUrl()+ API_ACCESS+ EXTRACT_NEW).body(content).responseString()
+        println("extractnew")
+        println(content)
+        println(getTheUrl()+ EXTRACT_NEW)
+        val (request, response, result) = Fuel.post(getTheUrl()+ EXTRACT_NEW).body(content).responseString()
+        println(result)
     }
 
     fun extractEnd(content:String){
