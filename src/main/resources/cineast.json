@@ -1,0 +1,8 @@
+{
+  "cineast":{
+    "host":"http://localhost:4567",
+    "user":"user",
+    "password":"user"
+
+  }
+}

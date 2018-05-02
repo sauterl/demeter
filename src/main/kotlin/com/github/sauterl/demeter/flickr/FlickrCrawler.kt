@@ -3,17 +3,13 @@ package com.github.sauterl.demeter.flickr
 import com.github.sauterl.demeter.cineast.AbstractImage
 import com.github.sauterl.demeter.cineast.CineastInterface
 import com.github.sauterl.demeter.cineast.ImageDownloader
-import org.mapdb.DBMaker
-import org.mapdb.Serializer
+import com.github.sauterl.demeter.utils.DataBase
 
 /**
  * TODO: write JavaDoc
  * @author loris.sauter
  */
 object FlickrCrawler {
-
-    private val db = DBMaker.fileDB("flickr.db").fileMmapEnable().make()
-    private val map = db.hashMap("map", Serializer.STRING, Serializer.STRING).createOrOpen()
 
     /*
         val flickr = FlickrInterface()
@@ -34,12 +30,15 @@ object FlickrCrawler {
                 ImageDownloader.downloadImage(image)
                 return@map image
             }
-            val toExtract = images.filter { img -> !map.containsKey(img.sha256) }
+            println("Items recieved from service: ${images.size}")
+            val toExtract = images.filter { img -> !DataBase.map().containsKey(img.sha256) }
+            println("Items to extract: ${toExtract.size}")
             cineast.extractNew(toExtract, FlickrExtractionBuilder())
             toExtract.forEach {
-                map.put(it.sha256, it.path.path)
+                DataBase.map()[it.sha256] = it.path.path
                 println("Added ${it.name} (${it.sha256}")
             }
+
         }
 
     }
@@ -47,7 +46,7 @@ object FlickrCrawler {
     private var running = true
 
     fun close(){
-        db.close()
+        DataBase.close()
         running = false
     }
 }

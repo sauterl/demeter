@@ -8,7 +8,7 @@ import com.github.kittinunf.fuel.Fuel
  * TODO: write JavaDoc
  * @author loris.sauter
  */
-class CineastInterface(val url:String){
+class CineastInterface(val url:String=Settings.host){
 
     companion object {
         const val API_ACCESS = "/api/v1/"

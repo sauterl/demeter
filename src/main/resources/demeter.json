@@ -1,0 +1,7 @@
+{
+  "general": {
+    "db-file":"demeter.db",
+    "img-dir":"temp/",
+    "other":"unknown"
+  }
+}
