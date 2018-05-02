@@ -4,7 +4,31 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.net.URI
 
 /**
- * TODO: Write JavaDoc
+ * TODO: write JavaDoc
  * @author loris.sauter
  */
-data class Item(@JsonProperty("object")val theObject:Object,val metadata:Array<MetaData>,val uri: URI)
+class Item(@JsonProperty("object") val theObject: Object, val metadata: List<MetaData>, val uri: URI) {
+
+    companion object {
+        data class MetaData(val key: String, val value: String, val domain: Domain = Domain.WEB) {
+            companion object {
+                enum class Domain {
+
+                    WEB;
+
+                    override fun toString(): String {
+                        return name.capitalize()
+                    }
+                }
+            }
+        }
+
+        data class Object(val name: String, val mediatype: MediaType = MediaType.IMAGE) {
+
+            enum class MediaType {
+                IMAGE
+            }
+        }
+    }
+
+}

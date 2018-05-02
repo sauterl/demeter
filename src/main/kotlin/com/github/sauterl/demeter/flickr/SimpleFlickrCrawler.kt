@@ -6,7 +6,7 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.result.Result
 import com.github.sauterl.demeter.cineast.CineastInterface
-import com.github.sauterl.demeter.cineast.ExtractionContainer
+import com.github.sauterl.demeter.cineast.ImageDownloader
 
 
 /**
@@ -26,12 +26,14 @@ class SimpleFlickrCrawler {
     }
 
     fun testMorer() {
+        /*
         val flickr = FlickrInterface()
         val photos = flickr.searchPhotos("fantasybasel", 20)
-        val container = RequestBuilder().createRequest(photos.photo)
+        val container = FlickrExtractionBuilder().createRequest(photos.photo)
         val cineast = CineastInterface("http://localhost:4567").apply { startSession() }
         // remove duplicates
         cineast.extractNew(mapper.writeValueAsString(container))
+        */
     }
 
     fun test() {
