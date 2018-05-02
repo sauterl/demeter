@@ -21,6 +21,16 @@ class FlickrInterface {
                 createMethod("flickr.photos.search") +
                 createParam("tags", tag) +
                 createParam("per_page", "500") +
+                createParam("extras","description," +
+                        "license," +
+                        "date_upload," +
+                        "date_taken," +
+                        "owner_name," +
+                        "original_format," +
+                        "geo,tags," +
+                        "machine_tags," +
+                        "url_o," +
+                        "url_m")+
                 requestClose +
                 bodyClose +
                 envelopeClose
@@ -35,41 +45,37 @@ class FlickrInterface {
         return deserializePhotosResult(extractJson(result))
     }
 
-    fun getInfo(photo:FlickrPhoto){
-        
-    }
-
     private val mapper = jacksonObjectMapper()
 
-    fun deserializePhotosResult(json: String): FlickrPhotosResult {
+    private fun deserializePhotosResult(json: String): FlickrPhotosResult {
         return mapper.readValue<FlickrPhotosResultContainer>(json).photos
     }
 
-    fun extractJson(result: Result<String, FuelError>): String {
+    private fun extractJson(result: Result<String, FuelError>): String {
         val start = result.get().indexOf('(')
         val end = result.get().lastIndexOf(')')
         return result.get().substring((start + 1)..end)
     }
 
-    val formatJson = "<format>json</format>"
-    val apiKey = "<api_key>$FLICKR_PUBLIC</api_key>"
+    private val formatJson = "<format>json</format>"
+    private val apiKey = "<api_key>$FLICKR_PUBLIC</api_key>"
 
-    val envelopeOpen = "<s:Envelope\n" +
+    private val envelopeOpen = "<s:Envelope\n" +
             "\txmlns:s=\"http://www.w3.org/2003/05/soap-envelope\"\n" +
             "\txmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\"\n" +
             "\txmlns:xsd=\"http://www.w3.org/1999/XMLSchema\"\n" +
             ">"
-    val envelopeClose = "</s:envelope>"
-    val bodyOpen = "<s:Body>"
-    val bodyClose = "</s:Body>"
-    val requestOpen = "<x:FlickrRequest xmlns:x=\"urn:flickr\">"
-    val requestClose = "</x:FlickrRequest>"
+    private val envelopeClose = "</s:envelope>"
+    private val bodyOpen = "<s:Body>"
+    private val bodyClose = "</s:Body>"
+    private val requestOpen = "<x:FlickrRequest xmlns:x=\"urn:flickr\">"
+    private val requestClose = "</x:FlickrRequest>"
 
-    fun createParam(name: String, value: String): String {
+    private fun createParam(name: String, value: String): String {
         return "<$name>$value</$name>"
     }
 
-    fun createMethod(method: String): String {
+    private fun createMethod(method: String): String {
         return "<method>$method</method>"
     }
 

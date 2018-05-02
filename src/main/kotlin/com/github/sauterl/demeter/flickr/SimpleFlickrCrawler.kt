@@ -16,7 +16,9 @@ class SimpleFlickrCrawler {
     private val flickrSoapUrl = "https://api.flickr.com/services/soap/"
 
     fun testMore(){
-        
+        val flickr = FlickrInterface()
+        val photos = flickr.searchPhotos("fantasybasel")
+
     }
 
     fun test() {
