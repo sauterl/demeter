@@ -45,12 +45,10 @@ class CineastInterface(val url:String){
         val (request, response, result) = Fuel.post(getTheUrl()+ API_ACCESS+ SESSION+END+"/${session.sessionId}").body(user).responseString()
     }
 
-    fun extractNew(content:String){
-        println("extractnew")
-        println(content)
-        println(getTheUrl()+ EXTRACT_NEW)
-        val (request, response, result) = Fuel.post(getTheUrl()+ EXTRACT_NEW).body(content).responseString()
-        println(result)
+    fun extractNew(images:List<AbstractImage>,builder:ExtractionBuilder){
+        val container = builder.build(images)
+        val (request, response, result) = Fuel.post(getTheUrl()+ EXTRACT_NEW).body(mapper.writeValueAsString(container)).responseString()
+        // TODO process result to inform caller about it
     }
 
     fun extractEnd(content:String){
