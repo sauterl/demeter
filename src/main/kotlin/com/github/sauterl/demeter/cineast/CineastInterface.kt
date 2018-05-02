@@ -46,6 +46,9 @@ class CineastInterface(val url:String){
     }
 
     fun extractNew(images:List<AbstractImage>,builder:ExtractionBuilder){
+        if(images.isEmpty()){
+            return
+        }
         val container = builder.build(images)
         val (request, response, result) = Fuel.post(getTheUrl()+ EXTRACT_NEW).body(mapper.writeValueAsString(container)).responseString()
         // TODO process result to inform caller about it
