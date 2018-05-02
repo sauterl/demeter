@@ -25,19 +25,29 @@ object FlickrCrawler {
         */
 
     fun crawlFor(tag: String, amount: Int = 500) {
-        val flickr = FlickrInterface()
-        val photos = flickr.searchPhotos(tag, amount)
-        val cineast = CineastInterface("http://localhost:4567")
-        val images = photos.photo.map {
-            val image = AbstractImage(it.id, it.title, it.getUrl().toExternalForm())
-            ImageDownloader.downloadImage(image)
-            return@map image
+        if(running){
+            val flickr = FlickrInterface()
+            val photos = flickr.searchPhotos(tag, amount)
+            val cineast = CineastInterface("http://localhost:4567")
+            val images = photos.photo.map {
+                val image = AbstractImage(it.id, it.title, it.getUrl().toExternalForm())
+                ImageDownloader.downloadImage(image)
+                return@map image
+            }
+            val toExtract = images.filter { img -> !map.containsKey(img.sha256) }
+            cineast.extractNew(toExtract, FlickrExtractionBuilder())
+            toExtract.forEach {
+                map.put(it.sha256, it.path.path)
+                println("Added ${it.name} (${it.sha256}")
+            }
         }
-        val toExtract = images.filter { img -> !map.containsKey(img.sha256) }
-        cineast.extractNew(toExtract, FlickrExtractionBuilder())
-        toExtract.forEach {
-            map.put(it.sha256, it.path.path)
-            println("Added ${it.name} (${it.sha256}")
-        }
+
+    }
+
+    private var running = true
+
+    fun close(){
+        db.close()
+        running = false
     }
 }
