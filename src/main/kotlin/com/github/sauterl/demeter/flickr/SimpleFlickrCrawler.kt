@@ -15,6 +15,10 @@ class SimpleFlickrCrawler {
 
     private val flickrSoapUrl = "https://api.flickr.com/services/soap/"
 
+    fun testMore(){
+        
+    }
+
     fun test() {
         val key = FLICKR_PUBLIC
         var postData = createPhotosByTagRequest("fantasybasel")
