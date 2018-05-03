@@ -1,12 +1,12 @@
 package com.github.sauterl.demeter.twitter
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.scribejava.apis.TwitterApi
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.model.OAuth1AccessToken
 import com.github.scribejava.core.model.OAuthRequest
 import com.github.scribejava.core.model.Verb
-import java.net.URL
 import java.net.URLEncoder
 
 
@@ -21,41 +21,23 @@ val request = OAuthRequest(Verb.GET, "https://api.twitter.com/1.1/search/tweets.
 val accessToken = OAuth1AccessToken(TWITTER_TOKEN, TWITTER_TOKEN_SECRET)
 
 fun test() {
-    service.signRequest(accessToken, request)
-    val e = service.execute(request)
-    println(e.body)
-
-}
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class TwitterTweet(
-        val created_at: String, // Actually valid JSON date?
-        val id_str: String,
-        val full_text: String, // TODO many more
-        val source:String // Not really usable
-)
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class TwitterMedia(
-        val id_str: String,
-        val media_url: URL,
-        val media_url_https: URL,
-        val url: URL, // THE URL
-//        val type: MediaType // Needs custom deserializer?
-        val type:String
-) {
-    companion object {
-        const val PHOTO = "photo"
-        enum class MediaType {
-            PHOTO;
-
-            override fun toString(): String {
-                return name.toLowerCase()
-            }
-        }
+  service.signRequest(accessToken, request)
+  val e = service.execute(request)
+  val resp = deserializeTwitterResponse(e.body)
+  var photos = 0
+  resp.statuses.forEach {
+    if (it.entities.media != null && !it.entities.media.isEmpty()) {
+      println("User ${it.user.screen_name} has photo: ${it.entities.media[0].media_url}")
+      photos++
+    } else {
+      println("User ${it.user.screen_name}'s tweet, without a photo")
     }
+  }
+  println("The ${resp.statuses.size} tweets contained $photos with media")
+
 }
 
-@JsonIgnoreProperties(ignoreUnknown = true) data class TwitterEntity(
-        val media:List<TwitterMedia>
-)
+fun deserializeTwitterResponse(json: String): TwitterResponse {
+  return jacksonObjectMapper().readValue(json)
+}
+
