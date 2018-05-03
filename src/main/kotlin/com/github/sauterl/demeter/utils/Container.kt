@@ -1,7 +1,5 @@
 package com.github.sauterl.demeter.utils
 
-import com.fasterxml.jackson.annotation.JsonProperty
-
 /**
  * TODO: write JavaDoc
  * @author loris.sauter

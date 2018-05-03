@@ -10,28 +10,28 @@ import org.mapdb.Serializer
  * @author loris.sauter
  */
 object DataBase {
-    private var db = makeDb()
-    private val map = createOrOpenMap(db)
+  private var db = makeDb()
+  private val map = createOrOpenMap(db)
 
-    private fun makeDb() : DB{
-        db = DBMaker.fileDB(Settings.dbFile).fileMmapEnable().make()
-        return db
-    }
+  private fun makeDb(): DB {
+    db = DBMaker.fileDB(Settings.dbFile).fileMmapEnable().make()
+    return db
+  }
 
-    private fun createOrOpenMap(db:DB): HTreeMap<String, String> {
-        return db.hashMap("map", Serializer.STRING, Serializer.STRING).createOrOpen()
-    }
+  private fun createOrOpenMap(db: DB): HTreeMap<String, String> {
+    return db.hashMap("map", Serializer.STRING, Serializer.STRING).createOrOpen()
+  }
 
-    fun close(){
-        db.close()
-    }
+  fun close() {
+    db.close()
+  }
 
-    fun map(): HTreeMap<String, String> {
-        return if(db.isClosed() ){
-            createOrOpenMap(db = makeDb())
-        }else{
-            map
-        }
+  fun map(): HTreeMap<String, String> {
+    return if (db.isClosed()) {
+      createOrOpenMap(db = makeDb())
+    } else {
+      map
     }
+  }
 
 }

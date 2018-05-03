@@ -1,7 +1,8 @@
 package com.github.sauterl.demeter.flickr
 
-import com.github.sauterl.demeter.cineast.*
+import com.github.sauterl.demeter.cineast.AbstractImage
 import com.github.sauterl.demeter.cineast.ExtractionBuilder
+import com.github.sauterl.demeter.cineast.Item
 
 /**
  * TODO: Write JavaDoc
@@ -9,9 +10,9 @@ import com.github.sauterl.demeter.cineast.ExtractionBuilder
  */
 class FlickrExtractionBuilder : ExtractionBuilder {
 
-    override fun createMetaDataList(image: AbstractImage): List<Item.Companion.MetaData> {
-        return emptyList()
-    }
+  override fun createMetaDataList(image: AbstractImage): List<Item.Companion.MetaData> {
+    return emptyList()
+  }
 
 
 }

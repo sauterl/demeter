@@ -13,47 +13,47 @@ import java.net.URL
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class FlickrPhoto(
-        val id: String,
-        val owner: String,
-        val secret: String,
-        val server: String,
-        val farm: Number,
-        val title: String,
-        val ispublic: Number,
-        val isfriend: Number,
-        val isfamily: Number,
-        val description: FlickrDescription?,
-        /**
-         * In unix timestamp
-         */
-        val dateupload: String?,
-        /**
-         * In MySQL date format
-         */
-        val datetaken: String?,
-        /**
-         * ee https://www.flickr.com/services/api/misc.dates.html
-         * 0	Y-m-d H:i:s
-         * 4	Y-m
-         * 6	Y
-         * 8	Circa..
-         */
-        val datetakengranularity: String?,
-        val ownername: String?,
-        val tags: String?,
-        val latitude: Number?,
-        val longitude: Number?
-        ) {
+    val id: String,
+    val owner: String,
+    val secret: String,
+    val server: String,
+    val farm: Number,
+    val title: String,
+    val ispublic: Number,
+    val isfriend: Number,
+    val isfamily: Number,
+    val description: FlickrDescription?,
+    /**
+     * In unix timestamp
+     */
+    val dateupload: String?,
+    /**
+     * In MySQL date format
+     */
+    val datetaken: String?,
+    /**
+     * ee https://www.flickr.com/services/api/misc.dates.html
+     * 0	Y-m-d H:i:s
+     * 4	Y-m
+     * 6	Y
+     * 8	Circa..
+     */
+    val datetakengranularity: String?,
+    val ownername: String?,
+    val tags: String?,
+    val latitude: Number?,
+    val longitude: Number?
+) {
 
-    data class FlickrDescription(
-            val _content: String
-    )
+  data class FlickrDescription(
+      val _content: String
+  )
 
-    fun getUrl(): URL {
-        return URL("https://farm$farm.staticflickr.com/$server/${id}_$secret.jpg")
-    }
+  fun getUrl(): URL {
+    return URL("https://farm$farm.staticflickr.com/$server/${id}_$secret.jpg")
+  }
 
-    fun getTagList(): List<String> {
-        return tags?.split(" ") ?: emptyList()
-    }
+  fun getTagList(): List<String> {
+    return tags?.split(" ") ?: emptyList()
+  }
 }

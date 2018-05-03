@@ -5,9 +5,9 @@ package com.github.sauterl.demeter.flickr
  * @author loris.sauter
  */
 data class FlickrPhotosResult(
-        val page:Number,
-        val pages:Number,
-        val perpage:Number,
-        val total:Number,
-        val photo:Array<FlickrPhoto>
+    val page: Number,
+    val pages: Number,
+    val perpage: Number,
+    val total: Number,
+    val photo: Array<FlickrPhoto>
 )
