@@ -2,15 +2,18 @@
   "general": {
     "dbFile": "demeter.db",
     "imgDir": "temp/",
-    "identifier":"default.json"
+    "identifier": "default.json"
   },
   "flickr": {
-    "amount":100
+    "amount": 100
   },
-  "cineast":{
-      "host":"http://localhost:4567",
-      "user":"user",
-      "password":"user"
-
-    }
+  "cineast": {
+    "host": "http://localhost:4567",
+    "user": "user",
+    "password": "user"
+  },
+  "twitter":{
+    "storeTweets":true,
+    "tweetDir":"tweets/"
+  }
 }

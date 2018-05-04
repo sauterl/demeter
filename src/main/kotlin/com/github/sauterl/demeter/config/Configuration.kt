@@ -13,6 +13,8 @@ object Configuration {
     var cfg = Config {
       addSpec(GeneralConfig)
       addSpec(CineastConfig)
+      addSpec(TwitterConfig)
+      addSpec(FlickrConfig)
     }.withSourceFrom.json.resource("default.json")
 
     try{
@@ -32,7 +34,7 @@ object Configuration {
       .withSourceFrom.json.file("demeter.json")
       .withSourceFrom.env().withSourceFrom.systemProperties()*/
 
-  private val config = initConfig()
+  val config = initConfig()
 
   object Cineast{
     val host = config[CineastConfig.host]
@@ -44,5 +46,16 @@ object Configuration {
     val identifier = config[GeneralConfig.identifier]
     val dbFile = config[GeneralConfig.dbFile]
     val imgDir = config[GeneralConfig.imgDir]
+  }
+
+  object Flickr{
+    val amount = config[FlickrConfig.amount]
+    val query = config[FlickrConfig.query]
+  }
+
+  object Twitter{
+    val storeTweets = config[TwitterConfig.storeTweets]
+    val tweetDir = config[TwitterConfig.tweetDir]
+    val query = config[TwitterConfig.query]
   }
 }
