@@ -8,7 +8,7 @@ import twitter4j.conf.ConfigurationBuilder
  * TODO: Write JavaDoc
  * @author loris.sauter
  */
-class SimpleTwitterCrawler {
+class Twitter4JCrawler {
 
   fun test() {
     // Thanks @lucaro for the example.

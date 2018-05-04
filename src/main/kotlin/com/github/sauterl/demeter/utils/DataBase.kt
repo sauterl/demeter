@@ -11,7 +11,7 @@ import org.mapdb.Serializer
  */
 object DataBase {
   private var db = makeDb()
-  private val map = createOrOpenMap(db)
+  private val internalMap = createOrOpenMap(db)
 
   private fun makeDb(): DB {
     db = DBMaker.fileDB(Settings.dbFile).fileMmapEnable().make()
@@ -23,15 +23,12 @@ object DataBase {
   }
 
   fun close() {
-    db.close()
-  }
-
-  fun map(): HTreeMap<String, String> {
-    return if (db.isClosed()) {
-      createOrOpenMap(db = makeDb())
-    } else {
-      map
+    if(db.isClosed()){
+      db.close()
     }
   }
+
+  val map: HTreeMap<String, String>
+    get() = if(db.isClosed()) createOrOpenMap(db = makeDb()) else internalMap
 
 }

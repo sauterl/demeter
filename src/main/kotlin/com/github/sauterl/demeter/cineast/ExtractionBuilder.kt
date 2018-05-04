@@ -4,7 +4,7 @@ package com.github.sauterl.demeter.cineast
  * TODO: Write JavaDoc
  * @author loris.sauter
  */
-interface ExtractionBuilder {
+@FunctionalInterface interface ExtractionBuilder {
 
   fun build(images: List<AbstractImage>): ExtractionContainer {
     return ExtractionContainer(images.map {

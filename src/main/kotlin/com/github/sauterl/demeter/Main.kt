@@ -2,7 +2,7 @@ package com.github.sauterl.demeter
 
 import com.github.sauterl.demeter.flickr.FlickrCrawler
 import com.github.sauterl.demeter.flickr.SimpleFlickrCrawler
-import com.github.sauterl.demeter.twitter.test
+import com.github.sauterl.demeter.twitter.TwitterCrawler
 
 /**
  * TODO: Write JavaDoc
@@ -10,15 +10,16 @@ import com.github.sauterl.demeter.twitter.test
  */
 fun main(args: Array<String>) {
   println("Started")
-  if (args.size >= 1) {
+  if (args.isNotEmpty()) {
     when (args[0].toLowerCase()) {
       "flickr" -> {
         FlickrCrawler.crawlFor("fantasybasel", 20)
         FlickrCrawler.close()
       }
       "twitter" -> {
-        //SimpleTwitterCrawler().test()
-        test()
+        //Twitter4JCrawler().test()
+        TwitterCrawler.crawlFor("fantasybasel")
+        TwitterCrawler.close()
       }
       else -> {
         println("No mode specified. Known modes: 'flickr', 'twitter'")

@@ -28,7 +28,23 @@ import java.net.URL
         val user: TwitterUser,
         val entities: TwitterEntity,
         val source: String // Not really usable
-    )
+    ){
+      fun hasPhoto(): Boolean {
+        var out = false
+
+        entities.media?.forEach {
+          if(it.isPhoto()){
+            out = true
+          }
+        }
+
+        return out
+      }
+
+      fun getMedia(): List<TwitterMedia>? {
+        return entities.media
+      }
+    }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class TwitterMedia(
