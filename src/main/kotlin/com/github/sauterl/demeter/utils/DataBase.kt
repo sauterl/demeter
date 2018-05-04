@@ -24,7 +24,7 @@ object DataBase {
   }
 
   fun close() {
-    if(db.isClosed()){
+    if(!db.isClosed()){
       db.close()
     }
   }

@@ -14,7 +14,7 @@ object TwitterCrawler {
 
   fun crawlFor(tag: String) {
     val twitter = TwitterInterface()
-    val resp = twitter.searchTaggedTweets(tag)
+    val resp = twitter.searchTweets(tag)
     val photoTweets = resp.statuses.filter { it.hasPhoto() }
     val images = photoTweets.map {
       val words = it.full_text.split(" ")
@@ -30,6 +30,7 @@ object TwitterCrawler {
     val toExtract = images.filter {img -> !DataBase.map.containsKey(img.sha256)}
     val cineast = CineastInterface() // Defaults to url from config
     cineast.extractNew(toExtract, TwitterExtractionBuilder())
+    cineast.extractEnd()
     toExtract.forEach {
       DataBase.map[it.sha256] = it.path.path
       println("Added ${it.name} (${it.sha256})")

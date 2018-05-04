@@ -18,7 +18,7 @@ object Configuration {
     try{
       cfg = cfg.withSourceFrom.json.file("demeter.json")
     }catch(e : FileNotFoundException){
-      // igrnoe
+      // ignore
     }
     return cfg.withSourceFrom.env().withSourceFrom.systemProperties()
 

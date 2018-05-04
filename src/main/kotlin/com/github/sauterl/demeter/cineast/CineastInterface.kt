@@ -3,7 +3,9 @@ package com.github.sauterl.demeter.cineast
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.Fuel
+import com.github.sauterl.demeter.api.ConcreteImage
 import com.github.sauterl.demeter.config.Configuration
+import java.io.File
 
 /**
  * TODO: write JavaDoc
@@ -53,7 +55,25 @@ class CineastInterface(val url: String = Configuration.Cineast.host) {
     // TODO process result to inform caller about it
   }
 
-  fun extractEnd(content: String) {
-    val (request, response, result) = Fuel.post(getTheUrl() + API_ACCESS + EXTRACT_END).body(content).responseString()
+  fun <T>extractNew(items:List<ConcreteImage<T>>, extractor: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>){
+    val container = ExtractionContainer(items.map {
+      val metaData = mutableListOf<Item.Companion.MetaData>()
+      metaData.add(Item.Companion.MetaData("source", it.rep.sourceUrl))
+      metaData.add(Item.Companion.MetaData("id", it.rep.id))
+      val metas = extractor(it)
+      metas.forEach {
+        if (!metaData.contains(it)) {
+          metaData.add(it)
+        }
+      }
+      return@map Item(Item.Companion.Object(it.rep.name, path=File(it.rep.path).name), metaData, it.rep.path)
+    })
+  }
+
+  fun extractEnd(content: String="{}") {
+    val (request, response, result) = Fuel.post(getTheUrl() +  EXTRACT_END).body(content).responseString()
+    println(request)
+    println(response)
+    println(result)
   }
 }

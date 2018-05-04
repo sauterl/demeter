@@ -1,5 +1,7 @@
 package com.github.sauterl.demeter.cineast
 
+import java.io.File
+
 /**
  * TODO: Write JavaDoc
  * @author loris.sauter
@@ -17,7 +19,7 @@ package com.github.sauterl.demeter.cineast
           metaData.add(it)
         }
       }
-      return@map Item(Item.Companion.Object(it.name), metaData, it.path)
+      return@map Item(Item.Companion.Object(it.name, path= File(it.path).name), metaData, it.path)
     })
   }
 
