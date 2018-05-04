@@ -3,12 +3,13 @@ package com.github.sauterl.demeter.cineast
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.Fuel
+import com.github.sauterl.demeter.config.Configuration
 
 /**
  * TODO: write JavaDoc
  * @author loris.sauter
  */
-class CineastInterface(val url: String = Settings.host) {
+class CineastInterface(val url: String = Configuration.Cineast.host) {
 
   companion object {
     const val API_ACCESS = "/api/v1/"
@@ -17,11 +18,9 @@ class CineastInterface(val url: String = Settings.host) {
     const val END = "end"
     const val EXTRACT_NEW = SESSION + "extract/new"
     const val EXTRACT_END = SESSION + "extract/end"
-    const val USER_NAME = "user"
-    const val USER_PW = "user"
   }
 
-  data class User(val username: String = USER_NAME, val password: String = USER_PW)
+  data class User(val username: String = Configuration.Cineast.user, val password: String = Configuration.Cineast.pw)
   data class CredentialsContainer(val credentials: User = User())
 
   data class Session(val validUntil: Long, val type: String, val sessionId: String)

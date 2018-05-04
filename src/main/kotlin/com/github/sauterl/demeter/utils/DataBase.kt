@@ -1,5 +1,6 @@
 package com.github.sauterl.demeter.utils
 
+import com.github.sauterl.demeter.config.Configuration
 import org.mapdb.DB
 import org.mapdb.DBMaker
 import org.mapdb.HTreeMap
@@ -14,7 +15,7 @@ object DataBase {
   private val internalMap = createOrOpenMap(db)
 
   private fun makeDb(): DB {
-    db = DBMaker.fileDB(Settings.dbFile).fileMmapEnable().make()
+    db = DBMaker.fileDB(Configuration.General.dbFile).fileMmapEnable().make()
     return db
   }
 

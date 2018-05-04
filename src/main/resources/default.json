@@ -1,0 +1,16 @@
+{
+  "general": {
+    "dbFile": "demeter.db",
+    "imgDir": "temp/",
+    "identifier":"default.json"
+  },
+  "flickr": {
+    "amount":100
+  },
+  "cineast":{
+      "host":"http://localhost:4567",
+      "user":"user",
+      "password":"user"
+
+    }
+}

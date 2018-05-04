@@ -4,7 +4,6 @@ import com.github.sauterl.demeter.cineast.AbstractImage
 import com.github.sauterl.demeter.cineast.CineastInterface
 import com.github.sauterl.demeter.cineast.ImageDownloader
 import com.github.sauterl.demeter.utils.DataBase
-import com.github.sauterl.demeter.utils.Settings
 
 /**
  * TODO: write JavaDoc
