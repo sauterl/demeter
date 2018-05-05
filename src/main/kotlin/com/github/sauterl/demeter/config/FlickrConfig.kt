@@ -7,6 +7,6 @@ import com.uchuhimo.konf.ConfigSpec
  * @author loris.sauter
  */
 object FlickrConfig : ConfigSpec("flickr") {
-  val amount by required<Number>()
+  val amount by required<Int>()
   val query by optional("fantasybasel")
 }

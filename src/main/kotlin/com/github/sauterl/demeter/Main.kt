@@ -1,11 +1,9 @@
 package com.github.sauterl.demeter
 
-import com.github.sauterl.demeter.api.AbstractImageRetriever
-import com.github.sauterl.demeter.api.Crawler
-import com.github.sauterl.demeter.cineast.Item
 import com.github.sauterl.demeter.config.Configuration
-import com.github.sauterl.demeter.flickr.FlickrCrawler
+import com.github.sauterl.demeter.instagram.SimpleInstagramWebScraper
 import com.github.sauterl.demeter.twitter.TwitterCrawler
+import com.github.sauterl.demeter.utils.DataBase
 
 /**
  * TODO: Write JavaDoc
@@ -15,21 +13,33 @@ fun main(args: Array<String>) {
   println("Started")
   println("Test: ${Configuration.General.identifier}")
 
+  Runtime.getRuntime().addShutdownHook(
+      Thread {
+        run {
+          DataBase.close()
+          println("DataBase closed")
+        }
+      }
+  )
+
+
   if (args.isNotEmpty()) {
     when (args[0].toLowerCase()) {
       "flickr" -> {
         println("flickr")
-        FlickrCrawler.crawlFor("fantasybasel", 20)
-        FlickrCrawler.close()
+        DemeterCrawler.crawlFlickr()
       }
       "twitter" -> {
         println("twitter")
         //Twitter4JCrawler().test()
         //TwitterCrawler.crawlFor("#fantasybasel")
         TwitterCrawler.crawlFor("@fantasybasel")
-        TwitterCrawler.close()
+      }
+      "instagram" -> {
+        SimpleInstagramWebScraper.test()
       }
       else -> {
+        println("instagram")
         println("No mode specified. Known modes: 'flickr', 'twitter'")
       }
     }
@@ -43,7 +53,7 @@ fun main(args: Array<String>) {
     emptyList()
   }*/
   /*
-  Crawler(AbstractImageRetriever<T>, {
+  Crawler(ImageProvider<T>, {
     img -> // create meta data list
   })*/
 }

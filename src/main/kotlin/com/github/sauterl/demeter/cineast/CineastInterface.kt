@@ -1,5 +1,6 @@
 package com.github.sauterl.demeter.cineast
 
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.Fuel
@@ -33,7 +34,7 @@ class CineastInterface(val url: String = Configuration.Cineast.host) {
 
   lateinit var session: Session
 
-  private val mapper = jacksonObjectMapper()
+  private val mapper = jacksonObjectMapper().enable(SerializationFeature.INDENT_OUTPUT)
 
   fun startSession() {
     val (request, response, result) = Fuel.post(getTheUrl() + SESSION + START).body(mapper.writeValueAsString(CredentialsContainer())).responseString()
@@ -68,6 +69,7 @@ class CineastInterface(val url: String = Configuration.Cineast.host) {
       }
       return@map Item(Item.Companion.Object(it.rep.name, path=File(it.rep.path).name), metaData, it.rep.path)
     })
+    val (request, response, result) = Fuel.post(getTheUrl() + EXTRACT_NEW).body(mapper.writeValueAsString(container)).responseString()
   }
 
   fun extractEnd(content: String="{}") {
