@@ -14,9 +14,9 @@ class Crawler<T>(val provider:ImageProvider<T>, val extractor: (img: ConcreteIma
   private val cineast = CineastInterface()
 
 
-  fun crawlFor(tag: String){
-    println("Crawling for $tag")
-    val images = provider.serve(tag)
+  fun crawlFor(query: String){
+    println("Crawling for $query")
+    val images = provider.serve(query)
     var counter = 0
     images.forEach {
       ImageDownloader.downloadImage(it.rep)

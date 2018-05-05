@@ -15,5 +15,8 @@
   "twitter":{
     "storeTweets":true,
     "tweetDir":"tweets/"
+  },
+  "instagram":{
+    "amount": 100
   }
 }

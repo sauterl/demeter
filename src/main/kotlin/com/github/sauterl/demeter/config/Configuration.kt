@@ -15,6 +15,7 @@ object Configuration {
       addSpec(CineastConfig)
       addSpec(TwitterConfig)
       addSpec(FlickrConfig)
+      addSpec(InstagramConfig)
     }.withSourceFrom.json.resource("default.json")
 
     try{
@@ -57,5 +58,10 @@ object Configuration {
     val storeTweets = config[TwitterConfig.storeTweets]
     val tweetDir = config[TwitterConfig.tweetDir]
     val query = config[TwitterConfig.query]
+  }
+
+  object Instagram{
+    val amount = config[InstagramConfig.amount]
+    val query = config[InstagramConfig.query]
   }
 }
