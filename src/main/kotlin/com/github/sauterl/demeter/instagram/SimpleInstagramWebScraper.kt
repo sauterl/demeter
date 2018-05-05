@@ -6,10 +6,12 @@ import org.jsoup.Connection
 import org.jsoup.Jsoup
 
 /**
- * TODO: Write JavaDoc
+ * Scrapes the public API of instagram for media associated with a certain tag.
  * @author loris.sauter
  */
 object SimpleInstagramWebScraper {
+
+
 
 
   fun test() {

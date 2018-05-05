@@ -1,7 +1,7 @@
 package com.github.sauterl.demeter
 
 import com.github.sauterl.demeter.config.Configuration
-import com.github.sauterl.demeter.instagram.SimpleInstagramWebScraper
+import com.github.sauterl.demeter.instagram.InstagramWebScraper
 import com.github.sauterl.demeter.twitter.TwitterCrawler
 import com.github.sauterl.demeter.utils.DataBase
 
@@ -36,7 +36,11 @@ fun main(args: Array<String>) {
         TwitterCrawler.crawlFor("@fantasybasel")
       }
       "instagram" -> {
-        SimpleInstagramWebScraper.test()
+        val nodes = InstagramWebScraper.retrieveNodesForTag("fantasybasel",2)
+        println("Received: ${nodes.size}")
+        nodes.forEach {
+          println("ID: ${it.id}\n\tcaption: ${it.captionText}\n\turl: ${it.display_url}\n\tsource: ${it.sourceUrl}")
+        }
       }
       else -> {
         println("instagram")
