@@ -2,7 +2,6 @@ package com.github.sauterl.demeter
 
 import com.github.sauterl.demeter.config.Configuration
 import com.github.sauterl.demeter.instagram.InstagramWebScraper
-import com.github.sauterl.demeter.twitter.TwitterCrawler
 import com.github.sauterl.demeter.utils.DataBase
 
 /**
@@ -33,7 +32,7 @@ fun main(args: Array<String>) {
         println("twitter")
         //Twitter4JCrawler().test()
         //TwitterCrawler.crawlFor("#fantasybasel")
-        TwitterCrawler.crawlFor("@fantasybasel")
+        DemeterCrawler.crawlTwitter()
       }
       "instagram" -> {
         val nodes = InstagramWebScraper.retrieveNodesForTag("fantasybasel",2)
