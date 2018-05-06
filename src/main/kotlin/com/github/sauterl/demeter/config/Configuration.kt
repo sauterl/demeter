@@ -1,6 +1,7 @@
 package com.github.sauterl.demeter.config
 
 import com.uchuhimo.konf.Config
+import mu.KotlinLogging
 import java.io.FileNotFoundException
 
 /**
@@ -8,8 +9,10 @@ import java.io.FileNotFoundException
  * @author loris.sauter
  */
 object Configuration {
+  private val logger = KotlinLogging.logger {}
 
   private fun initConfig(): Config {
+
     var cfg = Config {
       addSpec(GeneralConfig)
       addSpec(CineastConfig)
@@ -23,8 +26,9 @@ object Configuration {
     } catch (e: FileNotFoundException) {
       // ignore
     }
-    return cfg.withSourceFrom.env().withSourceFrom.systemProperties()
-
+    cfg = cfg.withSourceFrom.env().withSourceFrom.systemProperties()
+    logger.trace { "The config: $cfg" }
+    return cfg
   }
 
   /*

@@ -6,13 +6,18 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.Fuel
 import com.github.sauterl.demeter.api.ConcreteImage
 import com.github.sauterl.demeter.config.Configuration
+import com.github.sauterl.demeter.utils.traceTriple
+import mu.KotlinLogging
 import java.io.File
 
 /**
  * TODO: write JavaDoc
  * @author loris.sauter
  */
+
 class CineastInterface(val url: String = Configuration.Cineast.host) {
+
+  private val logger = KotlinLogging.logger {}
 
   companion object {
     const val API_ACCESS = "/api/v1/"
@@ -39,12 +44,13 @@ class CineastInterface(val url: String = Configuration.Cineast.host) {
   fun startSession() {
     val (request, response, result) = Fuel.post(getTheUrl() + SESSION + START).body(mapper.writeValueAsString(CredentialsContainer())).responseString()
     session = mapper.readValue<Session>(result.get())
-
+    logger.traceTriple(request, response, result)
   }
 
   fun endSession(user: String) {
     // TODO check if sesison still valid
     val (request, response, result) = Fuel.post(getTheUrl() + API_ACCESS + SESSION + END + "/${session.sessionId}").body(user).responseString()
+    logger.traceTriple(request, response, result)
   }
 
   fun extractNew(images: List<AbstractImage>, builder: ExtractionBuilder) {
@@ -53,6 +59,7 @@ class CineastInterface(val url: String = Configuration.Cineast.host) {
     }
     val container = builder.build(images)
     val (request, response, result) = Fuel.post(getTheUrl() + EXTRACT_NEW).body(mapper.writeValueAsString(container)).responseString()
+    logger.traceTriple(request,response,result)
     // TODO process result to inform caller about it
   }
 
@@ -70,12 +77,15 @@ class CineastInterface(val url: String = Configuration.Cineast.host) {
       return@map Item(Item.Companion.Object(it.rep.name, path = File(it.rep.path).name), metaData, it.rep.path)
     })
     val (request, response, result) = Fuel.post(getTheUrl() + EXTRACT_NEW).body(mapper.writeValueAsString(container)).responseString()
+    logger.traceTriple(request,response,result)
   }
 
   fun extractEnd(content: String = "{}") {
     val (request, response, result) = Fuel.post(getTheUrl() + EXTRACT_END).body(content).responseString()
-    println(request)
-    println(response)
-    println(result)
+    logger.traceTriple(request,response,result)
   }
+
+
 }
+
+

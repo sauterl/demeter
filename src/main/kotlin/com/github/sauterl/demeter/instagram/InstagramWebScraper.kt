@@ -5,6 +5,8 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.result.Result
+import com.github.sauterl.demeter.utils.traceTriple
+import mu.KotlinLogging
 import java.net.URLEncoder
 
 /**
@@ -15,6 +17,9 @@ import java.net.URLEncoder
  * @author loris.sauter
  */
 object InstagramWebScraper {
+
+  private val logger = KotlinLogging.logger {}
+
   private fun createUrl(tag: String): String {
     return "https://www.instagram.com/explore/tags/${URLEncoder.encode(tag, "UTF-8")}/?__a=1"
   }
@@ -27,36 +32,33 @@ object InstagramWebScraper {
    * Retrieves first page
    */
   private fun retrieveFirstNodesForTag(tag: String): Pair<List<InstagramWebNode>, InstagramWebPageInfo> {
-    val (_, _, result) = Fuel.get(createUrl(tag)).responseString()
+    val (request,response, result) = Fuel.get(createUrl(tag)).responseString()
+    logger.trace { "Retrieving first nodes for tag $tag" }
+    logger.traceTriple(request, response, result)
     return parseResponse(result)
   }
 
   private fun retrieveNodesForTag(tag: String, cursor: String): Pair<List<InstagramWebNode>, InstagramWebPageInfo> {
-    val (_, _, result) = Fuel.get(createFollowUpUrl(tag, cursor)).responseString()
+    val (request, response, result) = Fuel.get(createFollowUpUrl(tag, cursor)).responseString()
+    logger.trace { "Retrieving further nodes for tag $tag" }
+    logger.traceTriple(request, response, result)
     return parseResponse(result)
   }
 
   private fun parseResponse(result: Result<String, FuelError>): Pair<List<InstagramWebNode>, InstagramWebPageInfo> {
     val mapper = jacksonObjectMapper()
     val root = mapper.readTree(result.get())
-    println("$root") // DEBUG
     val graphql = root["graphql"]
-    println("$graphql") // DEBUG
     val hashtag = graphql["hashtag"]
     val hashtag2media = hashtag["edge_hashtag_to_media"]
     val pageInfo = hashtag2media["page_info"]
     val endCursor = pageInfo["end_cursor"].asText()
-    println("EndCursor: $endCursor") // DEBUG
     val hasMore = pageInfo["has_next_page"].asBoolean()
-    println("HasMore: $hasMore") // DEBUG
     val edges = hashtag2media["edges"]
-    println("$edges") // DEBUG
-    println("${edges.size()}") // DEBUG
     val nodeList: MutableList<InstagramWebNode> = mutableListOf()
     for (i in 0..(edges.size() - 1)) {
       val it = edges[i]
       val nodeJson = it["node"]
-      println("$nodeJson") // DEBUG
       val nodeTxt = mapper.writeValueAsString(nodeJson)
       val out: InstagramWebNode = mapper.readValue(nodeTxt)
       nodeList.add(out)

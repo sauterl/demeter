@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration name="ReqManConfig" status="WARN">
+    <Properties>
+        <Property name="loggingPattern">[%d{dd.MM.yyyy HH:mm:ss.SSS}][%-5level][%t] %C{1} - %msg%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${loggingPattern}"/>
+        </Console>
+        <RollingFile name="rollingFile" fileName="logs/demeter.log" filePattern="logs/$${date:yyyy-MM}/demeter-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="${loggingPattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="info"/>
+            </Filters>
+        </RollingFile>
+        <RollingFile name="traceFile" fileName="logs/demeter-trace.log" filePattern="logs/$${date:yyyy-MM}/demeter-trace-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="${loggingPattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="trace"/>
+            </Filters>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.github.sauterl.demeter" level="TRACE" additivity="false">
+            <AppenderRef ref="console" level="INFO" />
+            <AppenderRef ref="rollingFile"/>
+            <AppenderRef ref="traceFile" level="TRACE"/>
+        </Logger>
+        <!-- ROOT -->
+        <Root level="ERROR">
+            <AppenderRef ref="console" level="ERROR"/>
+            <AppenderRef ref="rollingFile" level="ERROR"/>
+            <AppenderRef ref="traceFile" level="TRACE"/>
+        </Root>
+    </Loggers>
+</Configuration>

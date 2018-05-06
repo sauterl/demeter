@@ -9,6 +9,7 @@ import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.model.OAuth1AccessToken
 import com.github.scribejava.core.model.OAuthRequest
 import com.github.scribejava.core.model.Verb
+import mu.KotlinLogging
 import java.io.File
 import java.net.URLEncoder
 
@@ -18,9 +19,9 @@ import java.net.URLEncoder
  */
 class TwitterInterface {
 
+  private val logger = KotlinLogging.logger {}
+
   fun searchTweets(query: String): TwitterResponse {
-    println("C: ${Configuration.config}")
-    println("T: ${Configuration.Twitter}")
     val service = ServiceBuilder(TWITTER_PUBLIC).apiSecret(TWITTER_PRIVATE).build(TwitterApi.instance())
     val request = OAuthRequest(Verb.GET, "https://api.twitter.com/1.1/search/tweets.json?q=" + URLEncoder.encode("$query", "UTF-8") + "&count=100&result_type=mixed&lang=en&tweet_mode=extended")
     val accessToken = OAuth1AccessToken(TWITTER_TOKEN, TWITTER_TOKEN_SECRET)
@@ -30,7 +31,7 @@ class TwitterInterface {
     return deserializeTwitterResponse(e.body)
   }
 
-  fun deserializeTwitterResponse(json: String): TwitterResponse {
+  private fun deserializeTwitterResponse(json: String): TwitterResponse {
     return jacksonObjectMapper().readValue(json)
   }
 
@@ -47,7 +48,7 @@ class TwitterInterface {
           val f = dir.resolve("${it["id"]}.json")
           if (!f.exists()) {
             f.writeText(mapper.writeValueAsString(it))
-            println("Wrote tweet ${it["id"]} to ${f.path}")
+            logger.trace{"Wrote tweet ${it["id"]} to ${f.path}"}
           }
         }
       }

@@ -15,7 +15,6 @@ class InstagramImageProvider : ImageProvider<InstagramWebNode> {
     return InstagramWebScraper.retrieveNodesForTag(tag, Configuration.Instagram.amount).filter { n -> !n.is_video }.map {
       val title = if (it.captionText != null) {
         val words = it.captionText.split(" ")
-        println("Words: $words")
         val sb = StringBuffer()
         if (words.size in 2..5) {
           val end = min(5, words.size)

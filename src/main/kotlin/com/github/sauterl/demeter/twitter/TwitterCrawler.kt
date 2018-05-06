@@ -9,6 +9,7 @@ import com.github.sauterl.demeter.utils.DataBase
  * TODO: write JavaDoc
  * @author loris.sauter
  */
+@Deprecated("Replaced by DemeterCrawler.crawlTwitter")
 object TwitterCrawler {
 
 

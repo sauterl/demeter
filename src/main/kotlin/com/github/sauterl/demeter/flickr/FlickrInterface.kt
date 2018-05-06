@@ -5,12 +5,16 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.result.Result
+import com.github.sauterl.demeter.utils.traceTriple
+import mu.KotlinLogging
 
 /**
  * TODO: Write JavaDoc
  * @author loris.sauter
  */
 class FlickrInterface {
+
+  private val logger = KotlinLogging.logger {}
 
   val flickrSoapUrl = "https://api.flickr.com/services/soap/"
 
@@ -38,12 +42,7 @@ class FlickrInterface {
         envelopeClose
 
     val (request, response, result) = Fuel.post(flickrSoapUrl).body(req).responseString()
-
-
-    println("Request: $request\n---\nResponse: $response\n---\nResult: $result")
-
-    println("Stripped: " + extractJson(result))
-
+    logger.traceTriple(request, response, result)
     /*
     Howto
     createParam("bla"){

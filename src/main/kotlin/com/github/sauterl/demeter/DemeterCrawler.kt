@@ -6,6 +6,7 @@ import com.github.sauterl.demeter.config.Configuration
 import com.github.sauterl.demeter.flickr.FlickrImageProvider
 import com.github.sauterl.demeter.instagram.InstagramImageProvider
 import com.github.sauterl.demeter.twitter.TwitterImageProvider
+import mu.KotlinLogging
 
 /**
  *
@@ -14,6 +15,8 @@ import com.github.sauterl.demeter.twitter.TwitterImageProvider
  * @author loris.sauter
  */
 object DemeterCrawler {
+
+  private val logger = KotlinLogging.logger {}
 
   fun crawlFlickr() {
 
@@ -30,7 +33,7 @@ object DemeterCrawler {
       return@Crawler list.toList()
     }
     val query = Configuration.Flickr.query
-    println("Crawling flickr for $query")
+    logger.info { "Crawling flickr for $query"}
     flickrCrawler.crawlFor(query)
   }
 
@@ -50,7 +53,7 @@ object DemeterCrawler {
 
     }
     val query = Configuration.Twitter.query
-    println("Crawling twitter for $query")
+    logger.info { "Crawling twitter for $query"}
     twitterCrawler.crawlFor(query)
   }
 
@@ -67,7 +70,7 @@ object DemeterCrawler {
       return@Crawler list.toList()
     }
     val query = Configuration.Instagram.query
-    println("Crawling instagram for $query")
+    logger.info { "Crawling instagram for $query"}
     instaGrawler.crawlFor(query)
   }
 }
