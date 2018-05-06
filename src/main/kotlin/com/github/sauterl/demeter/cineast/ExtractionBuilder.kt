@@ -6,7 +6,8 @@ import java.io.File
  * TODO: Write JavaDoc
  * @author loris.sauter
  */
-@FunctionalInterface interface ExtractionBuilder {
+@FunctionalInterface
+interface ExtractionBuilder {
 
   fun build(images: List<AbstractImage>): ExtractionContainer {
     return ExtractionContainer(images.map {
@@ -19,7 +20,7 @@ import java.io.File
           metaData.add(it)
         }
       }
-      return@map Item(Item.Companion.Object(it.name, path= File(it.path).name), metaData, it.path)
+      return@map Item(Item.Companion.Object(it.name, path = File(it.path).name), metaData, it.path)
     })
   }
 

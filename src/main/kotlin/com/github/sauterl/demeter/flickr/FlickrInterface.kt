@@ -23,16 +23,16 @@ class FlickrInterface {
         apiKey +
         createParam("tags", tag) +
         createParam("per_page", "$amount") +
-        createParam("extras","description," +
-                "license," +
-                "date_upload," +
-                "date_taken," +
-                "owner_name," +
-                "original_format," +
-                "geo,tags," +
-                "machine_tags," +
-                "url_o," +
-                "url_m")+
+        createParam("extras", "description," +
+            "license," +
+            "date_upload," +
+            "date_taken," +
+            "owner_name," +
+            "original_format," +
+            "geo,tags," +
+            "machine_tags," +
+            "url_o," +
+            "url_m") +
         requestClose +
         bodyClose +
         envelopeClose

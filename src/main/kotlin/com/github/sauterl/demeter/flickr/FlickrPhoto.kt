@@ -58,15 +58,15 @@ data class FlickrPhoto(
   }
 
   fun tagList(): String? {
-    if(getTagList().isEmpty()){
+    if (getTagList().isEmpty()) {
       return null
     }
     val sb = StringBuffer()
     getTagList().forEach {
       sb.append("$it,")
     }
-    if(sb.get(sb.length-1)==','){
-      sb.replace(sb.length,sb.length,"")
+    if (sb.get(sb.length - 1) == ',') {
+      sb.replace(sb.length, sb.length, "")
     }
     return sb.toString()
   }

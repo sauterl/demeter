@@ -23,7 +23,7 @@ class Item(@JsonProperty("object") val theObject: Object, val metadata: List<Met
       }
     }
 
-    data class Object(val name: String, val mediatype: MediaType = MediaType.IMAGE, val path:String) {
+    data class Object(val name: String, val mediatype: MediaType = MediaType.IMAGE, val path: String) {
 
       enum class MediaType {
         IMAGE

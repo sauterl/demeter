@@ -5,6 +5,6 @@ package com.github.sauterl.demeter.twitter
  * @author loris.sauter
  */
 data class TwitterMediaPhoto(
-    val tweet : TwitterResponse.Companion.TwitterTweet,
-    val media : TwitterResponse.Companion.TwitterMedia
+    val tweet: TwitterResponse.Companion.TwitterTweet,
+    val media: TwitterResponse.Companion.TwitterMedia
 )

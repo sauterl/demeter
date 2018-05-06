@@ -15,17 +15,17 @@ import com.github.sauterl.demeter.twitter.TwitterImageProvider
  */
 object DemeterCrawler {
 
-  fun crawlFlickr(){
+  fun crawlFlickr() {
 
-    val flickrCrawler = Crawler(FlickrImageProvider()){
-      val list : MutableList<Item.Companion.MetaData> = mutableListOf()
+    val flickrCrawler = Crawler(FlickrImageProvider()) {
+      val list: MutableList<Item.Companion.MetaData> = mutableListOf()
 
-      list.add(Item.Companion.MetaData("sourceUrl",it.img.getUrl().toExternalForm()))
-      list.add(Item.Companion.MetaData("ownerName", it.img.ownername ?:"n/a"))
+      list.add(Item.Companion.MetaData("sourceUrl", it.img.getUrl().toExternalForm()))
+      list.add(Item.Companion.MetaData("ownerName", it.img.ownername ?: "n/a"))
       list.add(Item.Companion.MetaData("ownerId", it.img.owner))
-      list.add(Item.Companion.MetaData("datetaken", it.img.datetaken?:"n/a"))
-      list.add(Item.Companion.MetaData("uploaded", it.img.dateupload ?:"n/a"))
-      list.add(Item.Companion.MetaData("tags",it.img.tagList()?:"n/a"))
+      list.add(Item.Companion.MetaData("datetaken", it.img.datetaken ?: "n/a"))
+      list.add(Item.Companion.MetaData("uploaded", it.img.dateupload ?: "n/a"))
+      list.add(Item.Companion.MetaData("tags", it.img.tagList() ?: "n/a"))
 
       return@Crawler list.toList()
     }
@@ -34,17 +34,17 @@ object DemeterCrawler {
     flickrCrawler.crawlFor(query)
   }
 
-  fun crawlTwitter(){
-    val twitterCrawler = Crawler(TwitterImageProvider()){
+  fun crawlTwitter() {
+    val twitterCrawler = Crawler(TwitterImageProvider()) {
       val media = it.img.media
-      val list : MutableList<Item.Companion.MetaData> = mutableListOf()
+      val list: MutableList<Item.Companion.MetaData> = mutableListOf()
 
       list.add(Item.Companion.MetaData("sourceUrl", media.url.toExternalForm()))
-      list.add(Item.Companion.MetaData("ownerId",it.img.tweet.user.id_str))
-      list.add(Item.Companion.MetaData("ownerName",it.img.tweet.user.name))
-      list.add(Item.Companion.MetaData("ownerDisplay",it.img.tweet.user.screen_name))
-      list.add(Item.Companion.MetaData("tweet",it.img.tweet.full_text))
-      list.add(Item.Companion.MetaData("created_at",it.img.tweet.created_at))
+      list.add(Item.Companion.MetaData("ownerId", it.img.tweet.user.id_str))
+      list.add(Item.Companion.MetaData("ownerName", it.img.tweet.user.name))
+      list.add(Item.Companion.MetaData("ownerDisplay", it.img.tweet.user.screen_name))
+      list.add(Item.Companion.MetaData("tweet", it.img.tweet.full_text))
+      list.add(Item.Companion.MetaData("created_at", it.img.tweet.created_at))
 
       return@Crawler list.toList()
 
@@ -54,14 +54,14 @@ object DemeterCrawler {
     twitterCrawler.crawlFor(query)
   }
 
-  fun crawlInstagram(){
-    val instaGrawler = Crawler(InstagramImageProvider()){
-      val list : MutableList<Item.Companion.MetaData> = mutableListOf()
+  fun crawlInstagram() {
+    val instaGrawler = Crawler(InstagramImageProvider()) {
+      val list: MutableList<Item.Companion.MetaData> = mutableListOf()
 
-      list.add(Item.Companion.MetaData("sourceUrl",it.img.sourceUrl))
-      list.add(Item.Companion.MetaData("ownerId",it.img.ownerId))
-      list.add(Item.Companion.MetaData("taken_at","$it.img.taken_at_timestamp"))
-      list.add(Item.Companion.MetaData("caption", it.img.captionText ?:"n/a"))
+      list.add(Item.Companion.MetaData("sourceUrl", it.img.sourceUrl))
+      list.add(Item.Companion.MetaData("ownerId", it.img.ownerId))
+      list.add(Item.Companion.MetaData("taken_at", "$it.img.taken_at_timestamp"))
+      list.add(Item.Companion.MetaData("caption", it.img.captionText ?: "n/a"))
 
 
       return@Crawler list.toList()

@@ -12,8 +12,6 @@ import org.jsoup.Jsoup
 object SimpleInstagramWebScraper {
 
 
-
-
   fun test() {
     // TODO Redo: https://medium.com/@h4t0n/instagram-data-scraping-550c5f2fb6f1
     val repsonse = Jsoup.connect("https://www.instagram.com/explore/tags/fantasybasel/?__a=1").method(Connection.Method.GET).execute()
@@ -53,7 +51,7 @@ object SimpleInstagramWebScraper {
       println("$edges")
       println("${edges.size()}")
       val nodeList: MutableList<InstagramWebNode> = mutableListOf()
-      for (i in 0..(edges.size()-1)) {
+      for (i in 0..(edges.size() - 1)) {
         val it = edges[i]
         val nodeJson = it["node"]
         println("$nodeJson")

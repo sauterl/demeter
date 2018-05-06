@@ -6,5 +6,5 @@ package com.github.sauterl.demeter.api
  */
 interface ImageProvider<T> {
 
-    fun serve(tag:String):List<ConcreteImage<T>>
+  fun serve(tag: String): List<ConcreteImage<T>>
 }

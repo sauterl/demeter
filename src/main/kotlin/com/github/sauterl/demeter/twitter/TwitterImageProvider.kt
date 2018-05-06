@@ -24,7 +24,6 @@ class TwitterImageProvider : ImageProvider<TwitterMediaPhoto> {
           run {
             val img = AbstractImage(it.id_str, sb.toString().trimEnd(), m.media_url.toString())
             list.add(ConcreteImage(img, TwitterMediaPhoto(it, m)))
-
           }
         }
       }

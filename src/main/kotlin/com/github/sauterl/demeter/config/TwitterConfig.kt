@@ -8,7 +8,7 @@ import com.uchuhimo.konf.ConfigSpec
  */
 object TwitterConfig : ConfigSpec("twitter") {
 
-  val storeTweets  by optional(false)
+  val storeTweets by optional(false)
   val tweetDir by optional("tweets/")
   val query by optional("#fantasybasel")
 }

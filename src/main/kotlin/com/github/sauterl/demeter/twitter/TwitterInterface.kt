@@ -34,18 +34,18 @@ class TwitterInterface {
     return jacksonObjectMapper().readValue(json)
   }
 
-  private fun writeTweets(pureBody:String){
-    if(Configuration.Twitter.storeTweets){
+  private fun writeTweets(pureBody: String) {
+    if (Configuration.Twitter.storeTweets) {
       val mapper = jacksonObjectMapper()
       mapper.enable(SerializationFeature.INDENT_OUTPUT)
       val dir = File(Configuration.Twitter.tweetDir)
       dir.mkdirs()
       val root = mapper.readTree(pureBody)
       val statuses = root["statuses"]
-      if(statuses.isArray){
+      if (statuses.isArray) {
         statuses.forEach {
           val f = dir.resolve("${it["id"]}.json")
-          if(!f.exists()){
+          if (!f.exists()) {
             f.writeText(mapper.writeValueAsString(it))
             println("Wrote tweet ${it["id"]} to ${f.path}")
           }

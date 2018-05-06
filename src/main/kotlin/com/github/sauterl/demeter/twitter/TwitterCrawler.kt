@@ -27,7 +27,7 @@ object TwitterCrawler {
       return@map img
     }
     println("Retrieved ${images.size} photo-tweets")
-    val toExtract = images.filter {img -> !DataBase.map.containsKey(img.sha256)}
+    val toExtract = images.filter { img -> !DataBase.map.containsKey(img.sha256) }
     val cineast = CineastInterface() // Defaults to url from config
     cineast.extractNew(toExtract, TwitterExtractionBuilder())
     cineast.extractEnd()
@@ -37,7 +37,7 @@ object TwitterCrawler {
     }
   }
 
-  fun close(){
+  fun close() {
     DataBase.close()
   }
 }

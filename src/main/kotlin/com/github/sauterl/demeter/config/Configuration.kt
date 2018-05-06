@@ -18,9 +18,9 @@ object Configuration {
       addSpec(InstagramConfig)
     }.withSourceFrom.json.resource("default.json")
 
-    try{
+    try {
       cfg = cfg.withSourceFrom.json.file("demeter.json")
-    }catch(e : FileNotFoundException){
+    } catch (e: FileNotFoundException) {
       // ignore
     }
     return cfg.withSourceFrom.env().withSourceFrom.systemProperties()
@@ -37,30 +37,30 @@ object Configuration {
 
   val config = initConfig()
 
-  object Cineast{
+  object Cineast {
     val host = config[CineastConfig.host]
     val user = config[CineastConfig.user]
     val pw = config[CineastConfig.password]
   }
 
-  object General{
+  object General {
     val identifier = config[GeneralConfig.identifier]
     val dbFile = config[GeneralConfig.dbFile]
     val imgDir = config[GeneralConfig.imgDir]
   }
 
-  object Flickr{
+  object Flickr {
     val amount = config[FlickrConfig.amount]
     val query = config[FlickrConfig.query]
   }
 
-  object Twitter{
+  object Twitter {
     val storeTweets = config[TwitterConfig.storeTweets]
     val tweetDir = config[TwitterConfig.tweetDir]
     val query = config[TwitterConfig.query]
   }
 
-  object Instagram{
+  object Instagram {
     val amount = config[InstagramConfig.amount]
     val query = config[InstagramConfig.query]
   }

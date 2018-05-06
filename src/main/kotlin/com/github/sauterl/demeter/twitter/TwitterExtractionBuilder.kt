@@ -8,7 +8,7 @@ import com.github.sauterl.demeter.cineast.Item
  * TODO: write JavaDoc
  * @author loris.sauter
  */
-class TwitterExtractionBuilder:ExtractionBuilder {
+class TwitterExtractionBuilder : ExtractionBuilder {
   override fun createMetaDataList(image: AbstractImage): List<Item.Companion.MetaData> {
     return emptyList()
   }

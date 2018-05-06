@@ -24,12 +24,12 @@ object DataBase {
   }
 
   fun close() {
-    if(!db.isClosed()){
+    if (!db.isClosed()) {
       db.close()
     }
   }
 
   val map: HTreeMap<String, String>
-    get() = if(db.isClosed()) createOrOpenMap(db = makeDb()) else internalMap
+    get() = if (db.isClosed()) createOrOpenMap(db = makeDb()) else internalMap
 
 }

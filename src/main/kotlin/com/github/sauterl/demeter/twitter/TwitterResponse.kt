@@ -7,7 +7,8 @@ import java.net.URL
  * TODO: Write JavaDoc
  * @author loris.sauter
  */
-@JsonIgnoreProperties(ignoreUnknown = true) data class TwitterResponse(val statuses: List<TwitterTweet>) {
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class TwitterResponse(val statuses: List<TwitterTweet>) {
 
   companion object {
 
@@ -28,12 +29,12 @@ import java.net.URL
         val user: TwitterUser,
         val entities: TwitterEntity,
         val source: String // Not really usable
-    ){
+    ) {
       fun hasPhoto(): Boolean {
         var out = false
 
         entities.media?.forEach {
-          if(it.isPhoto()){
+          if (it.isPhoto()) {
             out = true
           }
         }

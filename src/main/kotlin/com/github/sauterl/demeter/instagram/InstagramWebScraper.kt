@@ -31,8 +31,8 @@ object InstagramWebScraper {
     return parseResponse(result)
   }
 
-  private fun retrieveNodesForTag(tag:String, cursor:String): Pair<List<InstagramWebNode>, InstagramWebPageInfo> {
-    val (_, _,result)=Fuel.get(createFollowUpUrl(tag,cursor)).responseString()
+  private fun retrieveNodesForTag(tag: String, cursor: String): Pair<List<InstagramWebNode>, InstagramWebPageInfo> {
+    val (_, _, result) = Fuel.get(createFollowUpUrl(tag, cursor)).responseString()
     return parseResponse(result)
   }
 
@@ -61,28 +61,28 @@ object InstagramWebScraper {
       val out: InstagramWebNode = mapper.readValue(nodeTxt)
       nodeList.add(out)
     }
-    return Pair(nodeList.toList(), InstagramWebPageInfo(endCursor,hasMore))
+    return Pair(nodeList.toList(), InstagramWebPageInfo(endCursor, hasMore))
   }
 
   data class InstagramWebPageInfo(
-      val cursor:String,
-      val hasMore:Boolean
+      val cursor: String,
+      val hasMore: Boolean
   )
 
-  fun retrieveNodesForTag(tag:String, amount:Int=100):List<InstagramWebNode>{
+  fun retrieveNodesForTag(tag: String, amount: Int = 100): List<InstagramWebNode> {
     val resultPair = retrieveFirstNodesForTag(tag)
-    if(resultPair.first.size >= amount){
-      return resultPair.first.subList(0,amount)
+    if (resultPair.first.size >= amount) {
+      return resultPair.first.subList(0, amount)
     }
-    var outList :MutableList<InstagramWebNode> = mutableListOf()
+    var outList: MutableList<InstagramWebNode> = mutableListOf()
     resultPair.first.forEach { outList.add(it) }
     var res = resultPair
-    while(res.second.hasMore && outList.size <= amount){
+    while (res.second.hasMore && outList.size <= amount) {
       res = retrieveNodesForTag(tag, res.second.cursor)
       res.first.forEach {
         outList.add(it)
       }
     }
-    return outList.subList(0,amount)
+    return outList.subList(0, amount)
   }
 }

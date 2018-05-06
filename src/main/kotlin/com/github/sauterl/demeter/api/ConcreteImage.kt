@@ -6,4 +6,4 @@ import com.github.sauterl.demeter.cineast.AbstractImage
  * TODO: write JavaDoc
  * @author loris.sauter
  */
-data class ConcreteImage<T>(val rep:AbstractImage, val img:T)
+data class ConcreteImage<T>(val rep: AbstractImage, val img: T)

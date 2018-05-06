@@ -9,12 +9,12 @@ import com.github.sauterl.demeter.utils.DataBase
  * TODO: write JavaDoc
  * @author loris.sauter
  */
-class Crawler<T>(val provider:ImageProvider<T>, val extractor: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>){
-//val extrator: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>
+class Crawler<T>(val provider: ImageProvider<T>, val extractor: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>) {
+  //val extrator: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>
   private val cineast = CineastInterface()
 
 
-  fun crawlFor(query: String){
+  fun crawlFor(query: String) {
     println("Crawling for $query")
     val images = provider.serve(query)
     var counter = 0
@@ -23,7 +23,7 @@ class Crawler<T>(val provider:ImageProvider<T>, val extractor: (img: ConcreteIma
       println("Downloaded ${counter++} / ${images.size}")
     }
     println("Retrieved ${images.size} images")
-    val toExtract = images.filter{img -> !DataBase.map.containsKey(img.rep.sha256)}
+    val toExtract = images.filter { img -> !DataBase.map.containsKey(img.rep.sha256) }
     println("Unseen items: ${toExtract.size}")
     cineast.extractNew(toExtract, extractor)
     println("Sent extraction request")
