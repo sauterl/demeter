@@ -2,7 +2,9 @@
   "general": {
     "dbFile": "demeter.db",
     "imgDir": "temp/",
-    "identifier": "default.json"
+    "identifier": "default.json",
+    "interval":120,
+    "until":"infinity"
   },
   "flickr": {
     "amount": 100

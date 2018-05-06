@@ -2,20 +2,24 @@ package com.github.sauterl.demeter
 
 import com.github.sauterl.demeter.config.Configuration
 import com.github.sauterl.demeter.utils.DataBase
+import mu.KotlinLogging
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 /**
  * TODO: Write JavaDoc
  * @author loris.sauter
  */
-fun main(args: Array<String>) {
-  println("Started")
-  println("Test: ${Configuration.General.identifier}")
 
+private val logger = KotlinLogging.logger {}
+
+fun main(args: Array<String>) {
+  logger.info { "Configuration Identifier: ${Configuration.General.identifier}" }
   Runtime.getRuntime().addShutdownHook(
       Thread {
         run {
           DataBase.close()
-          println("DataBase closed")
+          logger.info { "Database closed" }
         }
       }
   )
@@ -24,35 +28,74 @@ fun main(args: Array<String>) {
   if (args.isNotEmpty()) {
     when (args[0].toLowerCase()) {
       "flickr" -> {
-        println("flickr")
+        logger.info { "flickr" }
         DemeterCrawler.crawlFlickr()
       }
       "twitter" -> {
-        println("twitter")
+        logger.info { "twitter" }
         //Twitter4JCrawler().test()
         //TwitterCrawler.crawlFor("#fantasybasel")
         DemeterCrawler.crawlTwitter()
       }
       "instagram" -> {
-        println("instagram")
+        logger.info { "instagram" }
         DemeterCrawler.crawlInstagram()
       }
       else -> {
-        println("instagram")
-        println("No mode specified. Known modes: 'flickr', 'twitter'")
+        logger.error { "Unknown cli-argument(s): $args" }
       }
     }
   } else {
-    println("Provide a social media identifier (e.g. demeter.jar flickr)\n" +
-        "Available identifiers: flickr, twitter")
+    performCrawling()
   }
 
   /*
-  val crawler = Crawler<String>() {
-    emptyList()
-  }*/
+val crawler = Crawler<String>() {
+  emptyList()
+}*/
   /*
-  Crawler(ImageProvider<T>, {
-    img -> // create meta data list
-  })*/
+Crawler(ImageProvider<T>, {
+  img -> // create meta data list
+})*/
 }
+
+fun performCrawling() {
+  logger.info { "Crawling until ${Configuration.General.untilText()}" }
+  listenToCommands()
+  while (running) {
+    val start = System.currentTimeMillis()
+    DemeterCrawler.crawlFlickr()
+    DemeterCrawler.crawlTwitter()
+    DemeterCrawler.crawlInstagram()
+    val delta = (System.currentTimeMillis() - start) / 1000 // To get seconds
+    var sleep = if (delta < Configuration.General.inteval) Configuration.General.inteval - delta else 0
+    logger.info { "Sleeping for $sleep s" }
+    if(!Configuration.General.withinTimeBounds()){
+      logger.info { "Run out of time. stopping" }
+      System.exit(0)
+    }
+    Thread.sleep(sleep * 1000)
+    running = Configuration.General.withinTimeBounds()
+  }
+}
+
+fun listenToCommands() {
+  Thread {
+    val reader = BufferedReader(InputStreamReader(System.`in`))
+    logger.info { "Demeter CLI started" }
+    var line : String? = reader.readLine()
+    while(line != null){
+      val first = if (line.trim().split(" ").isEmpty()) "" else line.trim().split(" ")[0]
+      when(first){
+        "q", "quit", "stop", "exit" ->{
+          logger.info { "Stopping...." }
+          System.exit(0)
+        }
+      }
+
+      line = readLine()
+    }
+  }.start()
+}
+
+private var running = true

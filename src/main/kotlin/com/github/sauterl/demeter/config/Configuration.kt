@@ -3,6 +3,9 @@ package com.github.sauterl.demeter.config
 import com.uchuhimo.konf.Config
 import mu.KotlinLogging
 import java.io.FileNotFoundException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * TODO: write JavaDoc
@@ -51,6 +54,44 @@ object Configuration {
     val identifier = config[GeneralConfig.identifier]
     val dbFile = config[GeneralConfig.dbFile]
     val imgDir = config[GeneralConfig.imgDir]
+    val inteval = config[GeneralConfig.interval]
+    val until = config[GeneralConfig.until]
+
+    val forever = until.contentEquals("infinity")
+
+    fun untilDate() = initDate()
+
+    private val df = SimpleDateFormat("dd.MM.yyyy HH:mm:ss.SSS")
+    private val ldf = SimpleDateFormat("dd.MM.yyyy HH:mm")
+
+    private fun initDate(): Date? {
+      return try{
+        df.parse(until)
+      }catch(e:ParseException){
+        try{
+          ldf.parse(until)
+        }catch(e:ParseException){
+          null
+        }
+      }
+    }
+
+    fun withinTimeBounds():Boolean{
+      return if(forever){
+        true
+      }else{
+        untilDate()?.after(Date()) ?: true
+      }
+    }
+
+    fun untilText():String{
+      return if(forever){
+        "Forever. To stop type 'exit'"
+      }else{
+        df.format(untilDate())
+      }
+    }
+
   }
 
   object Flickr {
