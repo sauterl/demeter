@@ -13,7 +13,7 @@ import mu.KotlinLogging
 class Crawler<T>(val name:String, val provider: ImageProvider<T>, val extractor: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>) {
   //val extrator: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>
 
-  private val logger = KotlinLogging.logger(name)
+  private val logger = KotlinLogging.logger("com.github.sauterl.demeter.$name")
 
   private val cineast = CineastInterface()
 
