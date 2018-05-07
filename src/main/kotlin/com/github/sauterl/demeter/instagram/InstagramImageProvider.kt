@@ -16,15 +16,15 @@ class InstagramImageProvider : ImageProvider<InstagramWebNode> {
       val title = if (it.captionText != null) {
         val words = it.captionText.split(" ")
         val sb = StringBuffer()
-        if (words.size in 2..5) {
-          val end = min(5, words.size)
-          words.subList(0, end).forEach { w ->
-            sb.append("$w ")
+        when {
+          words.size in 2..5 -> {
+            val end = min(5, words.size)
+            words.subList(0, end).forEach { w ->
+              sb.append("$w ")
+            }
           }
-        } else if (words.isEmpty()) {
-          sb.append("n/a")
-        } else {
-          sb.append(words[0])
+          words.isEmpty() -> sb.append("n/a")
+          else -> sb.append(words[0])
         }
         sb.toString()
       } else {
