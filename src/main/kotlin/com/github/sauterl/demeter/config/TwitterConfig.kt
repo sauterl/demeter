@@ -10,5 +10,9 @@ object TwitterConfig : ConfigSpec("twitter") {
 
   val storeTweets by optional(false)
   val tweetDir by optional("tweets/")
-  val query by optional("#fantasybasel")
+  val queryList by optional(getDefaultQueryList())
+
+  private fun getDefaultQueryList():List<String>{
+    return listOf("#fantasybasel")
+  }
 }

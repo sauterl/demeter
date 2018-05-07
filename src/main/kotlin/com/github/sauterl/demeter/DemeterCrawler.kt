@@ -32,9 +32,11 @@ object DemeterCrawler {
 
       return@Crawler list.toList()
     }
-    val query = Configuration.Flickr.query
-    logger.info { "Crawling flickr for $query"}
-    flickrCrawler.crawlFor(query)
+    Configuration.Flickr.queryList.forEach {
+      logger.info { "Crawling flickr for $it" }
+      flickrCrawler.crawlFor(it)
+    }
+
   }
 
   fun crawlTwitter() {
@@ -52,9 +54,10 @@ object DemeterCrawler {
       return@Crawler list.toList()
 
     }
-    val query = Configuration.Twitter.query
-    logger.info { "Crawling twitter for $query"}
-    twitterCrawler.crawlFor(query)
+    Configuration.Twitter.queryList.forEach {
+      logger.info { "Crawling twitter for $it" }
+      twitterCrawler.crawlFor(it)
+    }
   }
 
   fun crawlInstagram() {
@@ -69,8 +72,9 @@ object DemeterCrawler {
 
       return@Crawler list.toList()
     }
-    val query = Configuration.Instagram.query
-    logger.info { "Crawling instagram for $query"}
-    instaGrawler.crawlFor(query)
+    Configuration.Instagram.queryList.forEach {
+      logger.info { "Crawling instagram for $it" }
+      instaGrawler.crawlFor(it)
+    }
   }
 }

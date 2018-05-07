@@ -8,5 +8,9 @@ import com.uchuhimo.konf.ConfigSpec
  */
 object InstagramConfig : ConfigSpec("instagram") {
   val amount by required<Int>()
-  val query by optional("fantasybasel")
+  val queryList by optional(getDefaultQueryList())
+
+  private fun getDefaultQueryList():List<String>{
+    return listOf("fantasybasel")
+  }
 }

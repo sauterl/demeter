@@ -96,17 +96,17 @@ object Configuration {
 
   object Flickr {
     val amount = config[FlickrConfig.amount]
-    val query = config[FlickrConfig.query]
+    val queryList = config[FlickrConfig.queryList]
   }
 
   object Twitter {
     val storeTweets = config[TwitterConfig.storeTweets]
     val tweetDir = config[TwitterConfig.tweetDir]
-    val query = config[TwitterConfig.query]
+    val queryList = config[TwitterConfig.queryList]
   }
 
   object Instagram {
     val amount = config[InstagramConfig.amount]
-    val query = config[InstagramConfig.query]
+    val queryList = config[InstagramConfig.queryList]
   }
 }

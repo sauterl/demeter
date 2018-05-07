@@ -12,7 +12,7 @@ import com.github.sauterl.demeter.config.Configuration
 class FlickrImageProvider : ImageProvider<FlickrPhoto> {
   override fun serve(tag: String): List<ConcreteImage<FlickrPhoto>> {
     val flickr = FlickrInterface()
-    val res = flickr.searchPhotos(Configuration.Flickr.query, Configuration.Flickr.amount.toInt())
+    val res = flickr.searchPhotos(tag, Configuration.Flickr.amount.toInt())
     return res.photo.map {
       val rep = AbstractImage(it.id, it.title, it.getUrl().toExternalForm())
       return@map ConcreteImage(rep, it)
