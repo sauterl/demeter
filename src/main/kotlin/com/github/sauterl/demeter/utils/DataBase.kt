@@ -13,6 +13,7 @@ import org.mapdb.Serializer
 object DataBase {
   private var db = makeDb()
   private val internalMap = createOrOpenMap(db)
+  private val internalSet = createOrOpenSet(db)
 
   private fun makeDb(): DB {
     db = DBMaker.fileDB(Configuration.General.dbFile).fileMmapEnable().make()
@@ -21,6 +22,10 @@ object DataBase {
 
   private fun createOrOpenMap(db: DB): HTreeMap<String, String> {
     return db.hashMap("map", Serializer.STRING, Serializer.STRING).createOrOpen()
+  }
+
+  private fun createOrOpenSet(db: DB): HTreeMap.KeySet<String> {
+    return db.hashSet("set", Serializer.STRING).createOrOpen()
   }
 
   fun close() {
@@ -32,4 +37,7 @@ object DataBase {
   val map: HTreeMap<String, String>
     get() = if (db.isClosed()) createOrOpenMap(db = makeDb()) else internalMap
 
+
+  val set: HTreeMap.KeySet<String>
+    get() = if (db.isClosed()) createOrOpenSet(db = makeDb()) else internalSet
 }

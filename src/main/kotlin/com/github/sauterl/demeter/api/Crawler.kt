@@ -10,20 +10,25 @@ import mu.KotlinLogging
  * TODO: write JavaDoc
  * @author loris.sauter
  */
-class Crawler<T>(val provider: ImageProvider<T>, val extractor: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>) {
+class Crawler<T>(val name:String, val provider: ImageProvider<T>, val extractor: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>) {
   //val extrator: (img: ConcreteImage<T>) -> List<Item.Companion.MetaData>
 
-  private val logger = KotlinLogging.logger{}
+  private val logger = KotlinLogging.logger(name)
 
   private val cineast = CineastInterface()
 
 
   fun crawlFor(query: String) {
     logger.info { "Crawling for query=$query" }
-    val images = provider.serve(query)
+    var images = provider.serve(query)
+    logger.info{"Found ${images.size} social media items"}
+    images = images.filter { img -> !DataBase.set.contains(img.rep.sourceUrl) }
+    logger.info { "Found ${images.size} new items (not already downloaded" }
     var counter = 0
     images.forEach {
       ImageDownloader.downloadImage(it.rep)
+      DataBase.set.add(it.rep.sourceUrl)
+      logger.info("Added ${it.rep.sourceUrl} to the database of seen urls")
       logger.info{"Downloaded ${counter++} / ${images.size}"}
     }
     val toExtract = images.filter { img -> !DataBase.map.containsKey(img.rep.sha256) }
@@ -31,7 +36,7 @@ class Crawler<T>(val provider: ImageProvider<T>, val extractor: (img: ConcreteIm
     cineast.extractNew(toExtract, extractor)
     logger.info { "Extraction request sent." }
     toExtract.forEach {
-      DataBase.map[it.rep.sha256] = it.rep.path.path
+      DataBase.map[it.rep.sha256] = it.rep.sourceUrl
       logger.info{"Added ${it.rep.name} to the database as ${it.rep.sha256}"}
     }
   }

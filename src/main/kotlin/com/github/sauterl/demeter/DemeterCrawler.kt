@@ -20,7 +20,7 @@ object DemeterCrawler {
 
   fun crawlFlickr() {
 
-    val flickrCrawler = Crawler(FlickrImageProvider()) {
+    val flickrCrawler = Crawler("FliCrawler",FlickrImageProvider()) {
       val list: MutableList<Item.Companion.MetaData> = mutableListOf()
 
       list.add(Item.Companion.MetaData("sourceUrl", it.img.getUrl().toExternalForm()))
@@ -40,7 +40,7 @@ object DemeterCrawler {
   }
 
   fun crawlTwitter() {
-    val twitterCrawler = Crawler(TwitterImageProvider()) {
+    val twitterCrawler = Crawler("TwitterCrawler",TwitterImageProvider()) {
       val media = it.img.media
       val list: MutableList<Item.Companion.MetaData> = mutableListOf()
 
@@ -61,7 +61,7 @@ object DemeterCrawler {
   }
 
   fun crawlInstagram() {
-    val instaGrawler = Crawler(InstagramImageProvider()) {
+    val instaGrawler = Crawler("InstaGrawler", InstagramImageProvider()) {
       val list: MutableList<Item.Companion.MetaData> = mutableListOf()
 
       list.add(Item.Companion.MetaData("sourceUrl", it.img.sourceUrl))
