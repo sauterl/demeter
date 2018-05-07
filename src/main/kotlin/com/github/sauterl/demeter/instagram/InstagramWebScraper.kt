@@ -85,6 +85,6 @@ object InstagramWebScraper {
         outList.add(it)
       }
     }
-    return outList.subList(0, amount)
+    return outList.subList(0, if(outList.size < amount) outList.size else amount)
   }
 }
