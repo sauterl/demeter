@@ -26,9 +26,9 @@ class InstagramImageProvider : ImageProvider<InstagramWebNode> {
           words.isEmpty() -> sb.append("n/a")
           else -> sb.append(words[0])
         }
-        sb.toString()
+        "${it.ownerId}'s image"
       } else {
-        "n/a"
+        "${it.ownerId}'s image"
       }
       val img = AbstractImage(it.id, title, it.display_url.toExternalForm())
       return@map ConcreteImage(img, it)
