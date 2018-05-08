@@ -3,6 +3,7 @@ package com.github.sauterl.demeter.twitter
 import com.github.sauterl.demeter.api.ConcreteImage
 import com.github.sauterl.demeter.api.ImageProvider
 import com.github.sauterl.demeter.cineast.AbstractImage
+import com.github.sauterl.demeter.utils.extractTitle
 import kotlin.math.min
 
 /**
@@ -16,25 +17,13 @@ class TwitterImageProvider : ImageProvider<TwitterMediaPhoto> {
     val photoTweets = resp.statuses.filter { it.hasPhoto() }
     val list: MutableList<ConcreteImage<TwitterMediaPhoto>> = mutableListOf()
     photoTweets.forEach {
-      val words = it.full_text.split(" ")
-      val sb = StringBuffer()
-      when {
-        words.size in 2..5 -> {
-          val end = min(5, words.size)
-          words.subList(0, end).forEach { w ->
-            sb.append("$w ")
-          }
-        }
-        words.isEmpty() -> sb.append("n/a")
-        else -> sb.append(words[0])
-      }
-      sb.toString()
+      val title = extractTitle(it.full_text, 5, def="${it.user.screen_name}'s image")
 
       if (it.getMedia() != null) {
         val medias = it.getMedia()!!
         medias.forEach { m ->
           run {
-            val img = AbstractImage(it.id_str, sb.toString().trimEnd(), m.media_url.toString())
+            val img = AbstractImage(it.id_str, title, m.media_url.toString())
             list.add(ConcreteImage(img, TwitterMediaPhoto(it, m)))
           }
         }
