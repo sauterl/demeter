@@ -66,7 +66,7 @@ object DemeterCrawler {
 
       list.add(Item.Companion.MetaData("sourceUrl", it.img.sourceUrl))
       list.add(Item.Companion.MetaData("ownerId", it.img.ownerId))
-      list.add(Item.Companion.MetaData("taken_at", "$it.img.taken_at_timestamp"))
+      list.add(Item.Companion.MetaData("taken_at", "${it.img.taken_at_timestamp}"))
       list.add(Item.Companion.MetaData("caption", it.img.captionText ?: "n/a"))
 
 
