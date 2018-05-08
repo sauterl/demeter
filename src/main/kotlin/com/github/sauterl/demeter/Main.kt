@@ -5,6 +5,7 @@ import com.github.sauterl.demeter.utils.DataBase
 import mu.KotlinLogging
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import kotlin.math.log
 
 /**
  * TODO: Write JavaDoc
@@ -61,6 +62,14 @@ Crawler(ImageProvider<T>, {
 
 fun performCrawling() {
   logger.info { "Crawling until ${Configuration.General.untilText()}" }
+  Thread.setDefaultUncaughtExceptionHandler(Thread.UncaughtExceptionHandler { t, e ->
+    run {
+      logger.error { "Unhandled exception in $t: $e" }
+      logger.error(e) {
+        "Exception: "
+      }
+    }
+  })
   listenToCommands()
   while (running) {
     val start = System.currentTimeMillis()
