@@ -75,6 +75,7 @@ object DemeterCrawler {
     Configuration.Instagram.queryList.forEach {
       logger.info { "Crawling instagram for $it" }
       instaGrawler.crawlFor(it)
+      Thread.sleep(500)
     }
   }
 }

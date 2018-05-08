@@ -43,8 +43,12 @@ object InstagramWebScraper {
   private fun retrieveNodesForTag(tag: String, cursor: String): Pair<List<InstagramWebNode>, InstagramWebPageInfo> {
     val (request, response, result) = Fuel.get(createFollowUpUrl(tag, cursor)).responseString()
     logger.trace { "Retrieving further nodes for tag $tag" }
-    logger.traceTriple(request, response, result)
-    return parseResponse(result)
+    if(response.statusCode > 210){
+      logger.traceTriple(request, response, result)
+      return parseResponse(result)
+    }else{
+      return Pair(emptyList(), InstagramWebPageInfo.empty)
+    }
   }
 
   private fun parseResponse(result: Result<String, FuelError>): Pair<List<InstagramWebNode>, InstagramWebPageInfo> {
