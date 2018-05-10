@@ -9,6 +9,7 @@ import java.net.URI
 data class AbstractImage(val id: String, val name: String, val sourceUrl: String) {
   lateinit var path: URI
   lateinit var sha256: String
+  var known:Boolean = false
 
   constructor(id: String, name: String, sourceUrl: String, path: URI, sha: String) : this(id, name, sourceUrl) {
     this.path = path

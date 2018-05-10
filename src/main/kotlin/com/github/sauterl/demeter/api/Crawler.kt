@@ -31,7 +31,7 @@ class Crawler<T>(val name:String, val provider: ImageProvider<T>, val extractor:
       logger.info("Added ${it.rep.sourceUrl} to the database of seen urls")
       logger.info{"Downloaded ${counter++} / ${images.size}"}
     }
-    val toExtract = images.filter { img -> !DataBase.map.containsKey(img.rep.sha256) }
+    val toExtract = images.filter{img -> !img.rep.known}.filter { img -> !DataBase.map.containsKey(img.rep.sha256) }
     logger.info { "Will extract ${toExtract.size} of ${images.size} retrieved items." }
     cineast.extractNew(toExtract, extractor)
     logger.info { "Extraction request sent." }

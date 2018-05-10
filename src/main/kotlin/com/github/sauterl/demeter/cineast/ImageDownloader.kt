@@ -27,6 +27,7 @@ object ImageDownloader {
       file.writeBytes(response.data)
       logger.trace { "Wrote ${file.path} to disk" }
     }else{
+      image.known = true
       logger.trace { "There already was a file ${file.path}" }
     }
     image.path = file.toURI()
